@@ -1,0 +1,16 @@
+[project]
+name = "macchina-gialla-backend"
+version = "0.1.0"
+description = "Backend per il gioco Macchina Gialla"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.27.0",
+    "sqlmodel>=0.0.16",
+]
+
+[tool.ruff]
+# Configurazione base per Ruff (Linting e Formatting)
+line-length = 88
+select = ["E", "F", "I"] # Errori, violazioni logiche e ordinamento import

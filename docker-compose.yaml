@@ -1,0 +1,21 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: macchina_gialla_server
+    ports:
+      - "8000:8000"
+    volumes:
+      # This maps your local folder to the container folder
+      # so the .db file survives container restarts!
+      - ./backend:/app
+      # We ignore the local .venv so the container uses its own internal one
+      - /app/.venv
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+
+networks:
+  default:
+    name: macchina_gialla_network

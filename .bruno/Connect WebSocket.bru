@@ -1,0 +1,19 @@
+meta {
+  name: Connect WebSocket
+  type: ws
+  seq: 3
+}
+
+ws {
+  url: ws://127.0.0.1:8000/ws/2M6KIN/Mario
+  body: ws
+  auth: inherit
+}
+
+body:ws {
+  name: message 1
+  type: json
+  content: '''
+    {"action": "bump"}
+  '''
+}
