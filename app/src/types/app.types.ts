@@ -1,13 +1,10 @@
-// The structure of our leaderboard
+import { components } from "./schema";
 export type Leaderboard = {
   [username: string]: number;
 };
 
 // The messages we expect from the FastAPI backend
-export type GameMessage =
-  | { type: "WELCOME"; scores: Leaderboard }
-  | { type: "SCORE_UPDATE"; scores: Leaderboard }
-  | { type: "WINNER_DECLARED"; scores: Leaderboard; winner: string };
+export type GameMessage = components["schemas"]["GameMessage"];
 
 // Define the navigation routes
 export type RootStackParamList = {

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Leaderboard, GameMessage } from "../types";
+import { Leaderboard, GameMessage } from "../types/app.types";
 
 const BASE_WS_URL = "ws://192.168.1.69:8000/ws";
 

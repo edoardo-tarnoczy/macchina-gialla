@@ -6,7 +6,8 @@
     "start": "expo start --lan",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "generate-types": "npx openapi-typescript ../shared/openapi.json --output ./src/types/schema.d.ts"
   },
   "dependencies": {
     "@react-navigation/native": "^7.1.27",

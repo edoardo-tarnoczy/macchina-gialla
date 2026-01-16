@@ -1,0 +1,15 @@
+{
+  "name": "macchina-gialla-monorepo",
+  "scripts": {
+    "dev:backend": "cd backend && uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000",
+    "dev:app": "cd app && env REACT_NATIVE_PACKAGER_HOSTNAME=192.168.1.69 npx expo start --lan --clear",
+    "dev": "npx concurrently \"npm run dev:backend\" \"npm run dev:app\"",
+    "build:all": "docker-compose build",
+    "gen:backend:types": "cd backend && uv run generate_openapi.py",
+    "gen:app:types": "cd app && npm run generate-types",
+    "gen:types": "npm run gen:backend:types && npm run gen:app:types"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}

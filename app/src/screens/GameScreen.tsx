@@ -8,7 +8,7 @@ import {
   Animated,
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../types";
+import { RootStackParamList } from "../types/app.types";
 import { useGameSocket } from "../hooks/useGameSocket";
 import { Car } from "lucide-react-native";
 import ConfettiCannon from "react-native-confetti-cannon";

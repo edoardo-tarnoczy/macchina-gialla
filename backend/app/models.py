@@ -4,11 +4,16 @@ from typing import List
 from datetime import datetime
 import random
 import string
-
+from typing import Dict, Optional, Literal
 
 def generate_room_code():
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
 
+# This is a "Data-Only" model. It won't create a table in SQLite.
+class GameMessage(SQLModel):
+    type: Literal["WELCOME", "SCORE_UPDATE", "WINNER_DECLARED"]
+    scores: Dict[str, int]
+    winner: Optional[str] = None
 
 class User(SQLModel, table=True):
     # We use uuid_pkg.uuid4 to generate a random 36-character ID

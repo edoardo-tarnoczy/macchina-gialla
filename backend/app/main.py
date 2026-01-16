@@ -1,8 +1,9 @@
 from contextlib import asynccontextmanager
+from typing import List
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Depends, HTTPException
 from sqlmodel import SQLModel, create_engine, Session, select
-from .models import User, Room, Score
+from .models import User, Room, Score, GameMessage
 from .websocket_manager import manager
 
 # 1. Setup the DB Engine
@@ -28,16 +29,17 @@ def get_session():
     with Session(engine) as session:
         yield session
 
+
 @app.get('/')
 def root():
     return {"message": "WebSocket Bump Game Server is running."}
 
-@app.get("/rooms")
+@app.get("/rooms", response_model=List[Room])
 def list_rooms(session: Session = Depends(get_session)):
     rooms = session.exec(select(Room)).all()
     return rooms
 
-@app.post("/rooms")
+@app.post("/rooms", response_model=Room)
 def create_room(session: Session = Depends(get_session)):
     new_room = Room()
     session.add(new_room)
@@ -54,6 +56,14 @@ def get_scores(room_code: str, session: Session = Depends(get_session)):
     scores_dict = {score.user.username: score.points for score in room.scores}
     return {"room_code": room.code, "scores": scores_dict}
 
+@app.get("/_internal/types", response_model=GameMessage)
+def export_types_dummy():
+    """This route exists solely to put GameMessage into the OpenAPI schema."""
+    return {
+        "type": "WELCOME",
+        "scores": {"Luca": 0},
+        "winner": None
+    }
 
 @app.websocket("/ws/{room_code}/{username}")
 async def websocket_endpoint(websocket: WebSocket, room_code: str, username: str, session: Session = Depends(get_session)):
