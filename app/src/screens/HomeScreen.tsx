@@ -14,21 +14,30 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Room } from "../types/app.types";
 import { CONFIG } from "../config";
 import { Clock } from "lucide-react-native";
+import { useGameHistory } from "../hooks/useGameHistory";
+import { useIsFocused } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
 const COLORS = {
-  bgDark: "#121212", // Sfondo principale
-  cardGray: "#1E1E1E", // Colore dei box di input e della lista
-  accentYellow: "#FFD700", // Giallo acceso
-  textGray: "#888888", // Testo secondario
+  bgDark: "#121212",
+  cardGray: "#1E1E1E",
+  accentYellow: "#FFD700",
+  textGray: "#888888",
   textWhite: "#FFFFFF",
 };
 
 export default function HomeScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [roomCode, setRoomCode] = useState("");
-  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<"create" | "join">("create");
+  const isFocused = useIsFocused(); // Hook to trigger refresh when returning to home
+  const { history, loadHistory, saveRoomToHistory } = useGameHistory();
+
+  useEffect(() => {
+    if (isFocused) {
+      loadHistory();
+    }
+  }, [isFocused]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -43,26 +52,24 @@ export default function HomeScreen({ navigation }) {
   };
   const handleCreateRoom = async () => {
     if (!username) return alert("Inserisci un nome!");
+    await saveName(username);
 
-    setLoading(true);
     try {
       const response = await fetch(`${CONFIG.API_URL}/rooms`, {
         method: "POST",
       });
-      const data: Room = await response.json(); // Type safety here!
+      const data: Room = await response.json();
 
-      // Save this room as the "last visited"
-      await AsyncStorage.setItem("@last_room", data.code);
+      await saveRoomToHistory(data.code);
 
       navigation.navigate("Game", { roomCode: data.code, username });
     } catch (e) {
       alert("Errore connessione server");
-    } finally {
-      setLoading(false);
     }
   };
-  const handleJoinRoom = () => {
+  const handleJoinRoom = async () => {
     if (!username || !roomCode) return alert("Manca qualcosa!");
+    await saveRoomToHistory(roomCode);
     navigation.navigate("Game", {
       roomCode: roomCode.toUpperCase(),
       username,
@@ -77,12 +84,6 @@ export default function HomeScreen({ navigation }) {
     }
   }
 
-  const historyDummyData = [
-    { id: 1, name: "Stanza Famiglia", code: "A7B2X9", date: "23.03.2022" },
-    { id: 2, name: "Ufficio Gara", code: "KJ99LP", date: "25.06.2022" },
-    { id: 3, name: "Cena Amici", code: "WW12QQ", date: "24.05.2022" },
-  ];
-
   const [tabAnim] = useState(new Animated.Value(0));
 
   const handleTabChange = (tab: "create" | "join") => {
@@ -94,15 +95,13 @@ export default function HomeScreen({ navigation }) {
     }).start();
   };
 
-  // Interpolazione per muovere il background giallo del selettore
   const sliderTranslate = tabAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: [4, (width - 40) / 2], // 40 è il padding laterale
+    outputRange: [4, (width - 40) / 2],
   });
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* 1. SEZIONE FISSA: TITOLO E TABS */}
       <View style={styles.fixedHeader}>
         <Text style={styles.mainTitle}>MACCHINA{"\n"}GIALLA</Text>
 
@@ -141,7 +140,6 @@ export default function HomeScreen({ navigation }) {
         </View>
       </View>
 
-      {/* 2. FORM DINAMICO (Username + eventuale Code + Bottone) */}
       <View style={styles.formSection}>
         <View style={styles.inputGroup}>
           <Text style={styles.label}>IL TUO NOME</Text>
@@ -179,7 +177,6 @@ export default function HomeScreen({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      {/* 3. SEZIONE STORICO (ScrollView) */}
       <View style={styles.historySection}>
         <View style={styles.historyHeader}>
           <Clock color={COLORS.textGray} size={16} />
@@ -191,17 +188,20 @@ export default function HomeScreen({ navigation }) {
           contentContainerStyle={styles.historyContent}
           showsVerticalScrollIndicator={false}
         >
-          {historyDummyData.map((item) => (
+          {history.map((item) => (
             <TouchableOpacity
-              key={item.id}
+              key={item.code}
               style={styles.historyItem}
               activeOpacity={0.7}
+              onPress={async () => {
+                setRoomCode(item.code);
+                await handleJoinRoom();
+              }}
             >
               <View>
-                <Text style={styles.historyName}>{item.name}</Text>
                 <Text style={styles.historyCode}>Codice: {item.code}</Text>
               </View>
-              <Text style={styles.historyDate}>{item.date}</Text>
+              <Text style={styles.historyDate}>{item.createdAt}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>

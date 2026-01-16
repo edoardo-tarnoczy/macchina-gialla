@@ -9,7 +9,6 @@ export const useGameSocket = (roomCode: string, username: string) => {
   const socket = useRef<WebSocket | null>(null);
 
   useEffect(() => {
-    // Reset winner if room/user changes
     setWinner(null);
 
     socket.current = new WebSocket(`${CONFIG.WS_URL}/${roomCode}/${username}`);
@@ -20,12 +19,11 @@ export const useGameSocket = (roomCode: string, username: string) => {
     socket.current.onmessage = (event) => {
       const data: GameMessage = JSON.parse(event.data);
 
-      // Handle updates and winners
       if (data.type === "WELCOME" || data.type === "SCORE_UPDATE") {
         setScores(data.scores);
       } else if (data.type === "WINNER_DECLARED") {
         setScores(data.scores);
-        setWinner(data.winner); // Trigger victory state
+        setWinner(data.winner);
       }
     };
 
@@ -38,5 +36,5 @@ export const useGameSocket = (roomCode: string, username: string) => {
     }
   };
 
-  return { scores, bumpScore, isConnected, winner }; // Added winner
+  return { scores, bumpScore, isConnected, winner };
 };

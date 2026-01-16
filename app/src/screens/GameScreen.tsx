@@ -6,23 +6,30 @@ import {
   TouchableOpacity,
   ScrollView,
   Animated,
+  Dimensions,
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/app.types";
 import { useGameSocket } from "../hooks/useGameSocket";
-import { Car } from "lucide-react-native";
+import { Car, ChevronLeft, Crown } from "lucide-react-native";
 import ConfettiCannon from "react-native-confetti-cannon";
 import * as Haptics from "expo-haptics";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Game">;
-
-export default function GameScreen({ route }: Props) {
+const COLORS = {
+  bgDark: "#121212",
+  cardGray: "#1E1E1E",
+  accentYellow: "#FFD700",
+  textWhite: "#FFFFFF",
+};
+const { width } = Dimensions.get("window");
+export default function GameScreen({ route, navigation }: Props) {
   const { roomCode, username } = route.params;
   const { scores, bumpScore, isConnected, winner } = useGameSocket(
     roomCode,
     username,
   );
-  // Animation value for the "press" effect
   const scaleAnim = new Animated.Value(1);
 
   const handlePressIn = () => {
@@ -38,19 +45,23 @@ export default function GameScreen({ route }: Props) {
   };
 
   const onBump = async () => {
-    // 1. Physical Feedback
     if (winner) return;
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
 
-    // 2. Server Update
     bumpScore();
   };
 
   return (
-    <View style={styles.container}>
-      {/* Status Bar */}
-      <View style={styles.header}>
-        <Text style={styles.roomText}>ROOM: {roomCode}</Text>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.headerNav}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <ChevronLeft color={COLORS.textWhite} size={32} />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Macchina Gialla</Text>
+      </View>
+
+      <View style={styles.roomCodeBadge}>
+        <Text style={styles.roomCodeText}>Room Code: {roomCode}</Text>
         <View
           style={[
             styles.dot,
@@ -60,111 +71,197 @@ export default function GameScreen({ route }: Props) {
       </View>
 
       {winner && (
-        <View style={styles.winnerOverlay}>
-          <ConfettiCannon count={200} origin={{ x: -10, y: 0 }} />
-          <Text style={styles.winnerTitle}>
-            👑 {winner.toUpperCase()} VINCE!
-          </Text>
+        <View style={styles.winnerBannerContainer}>
+          <View style={styles.winnerBanner}>
+            <Crown
+              color={COLORS.accentYellow}
+              size={32}
+              fill={COLORS.accentYellow}
+              style={{ marginRight: 10 }}
+            />
+            <Text style={styles.winnerBannerText}>
+              {winner.toUpperCase()} VINCE!
+            </Text>
+          </View>
         </View>
       )}
-
-      <Text style={styles.title}>MACCHINA GIALLA!</Text>
-
-      {/* THE BUTTON */}
-      <Animated.View
-        style={{ transform: [{ scale: scaleAnim }], opacity: winner ? 0.5 : 1 }}
-      >
-        <TouchableOpacity
-          activeOpacity={1}
-          onPressIn={handlePressIn}
-          onPressOut={handlePressOut}
-          onPress={onBump}
-          disabled={!!winner}
-          style={styles.mainButton}
+      <View style={styles.mainButtonContainer}>
+        <Animated.View
+          style={{
+            transform: [{ scale: scaleAnim }],
+            opacity: winner ? 0.5 : 1,
+          }}
         >
-          <Car size={100} color="black" fill="black" />
-          <Text style={styles.buttonLabel}>
-            {winner ? "GARA FINITA" : "BUMP"}
-          </Text>
-        </TouchableOpacity>
-      </Animated.View>
+          <TouchableOpacity
+            activeOpacity={1}
+            onPressIn={handlePressIn}
+            onPressOut={handlePressOut}
+            onPress={onBump}
+            disabled={!!winner}
+            style={styles.mainButtonSquare} // Stile aggiornato
+          >
+            <Car
+              size={80}
+              color="black"
+              fill="black"
+              style={{ marginBottom: 10 }}
+            />
+            <Text style={styles.buttonLabel}>BUMP</Text>
+          </TouchableOpacity>
+        </Animated.View>
+      </View>
 
-      {/* LEADERBOARD */}
-      <View style={styles.leaderboard}>
-        <Text style={styles.leaderboardTitle}>Classifica Live</Text>
-        <ScrollView contentContainerStyle={styles.scrollContent}>
+      <View style={styles.leaderboardContainer}>
+        <Text style={styles.leaderboardTitle}>Live Leaderboard</Text>
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
           {Object.entries(scores)
             .sort(([, a], [, b]) => b - a)
-            .map(([name, score]) => (
-              <View key={name} style={styles.scoreRow}>
-                <Text style={styles.nameText}>
-                  {name === username ? "⭐️ Tu" : name}
+            .map(([name, score], index) => (
+              <View
+                key={name}
+                style={[styles.scoreRow, name === winner && styles.winnerRow]}
+              >
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  {/* Aggiungi una stella o corona per il primo in classifica */}
+                  {index === 0 && <Text style={{ marginRight: 5 }}>⭐</Text>}
+                  <Text
+                    style={[
+                      styles.nameText,
+                      name === winner && {
+                        color: COLORS.accentYellow,
+                        fontWeight: "bold",
+                      },
+                    ]}
+                  >
+                    {name === username ? "Tu" : name}
+                  </Text>
+                </View>
+                <Text
+                  style={[
+                    styles.scoreText,
+                    name === winner && { color: COLORS.accentYellow },
+                  ]}
+                >
+                  {score}
                 </Text>
-                <Text style={styles.scoreText}>{score}</Text>
               </View>
             ))}
         </ScrollView>
       </View>
-    </View>
+      {winner && (
+        <ConfettiCannon
+          count={200}
+          origin={{ x: width / 2, y: -20 }} // Starts just above the screen
+          fadeOut={true}
+          fallSpeed={3000}
+          explosionSpeed={350}
+          colors={["#FFD700", "#FFA500", "#FFFFFF", "#333333"]} // Yellow, Orange, White, Grey
+          autoStart={true}
+        />
+      )}
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#121212",
+    backgroundColor: COLORS.bgDark,
     alignItems: "center",
-    paddingTop: 60,
-  },
-  header: { flexDirection: "row", alignItems: "center", marginBottom: 20 },
-  roomText: {
-    color: "#666",
-    fontSize: 14,
-    fontWeight: "bold",
-    marginRight: 10,
+    justifyContent: "center",
   },
   dot: { width: 10, height: 10, borderRadius: 5 },
-  title: {
-    fontSize: 32,
-    fontWeight: "900",
-    color: "#FFD700",
-    marginBottom: 50,
+  headerNav: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
   },
-  mainButton: {
-    width: 240,
-    height: 240,
-    borderRadius: 120,
-    backgroundColor: "#FFD700",
+  headerTitle: { color: COLORS.textWhite, fontSize: 20, fontWeight: "bold" },
+  roomCodeBadge: {
+    alignSelf: "center",
+    marginLeft: 20,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    backgroundColor: COLORS.cardGray,
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 8,
+    marginBottom: 40,
+  },
+  roomCodeText: { color: "#CCC", fontWeight: "600" },
+
+  // Bottone Centrale Quadrato
+  mainButtonContainer: { alignItems: "center", marginBottom: 50, zIndex: 1 },
+  mainButtonSquare: {
+    width: 200,
+    height: 200,
+    borderRadius: 35, // Quadrato arrotondato
+    backgroundColor: COLORS.accentYellow,
     justifyContent: "center",
     alignItems: "center",
-    elevation: 15,
-    shadowColor: "#FFD700",
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.4,
+    // Ombra gialla per effetto "glow"
+    shadowColor: COLORS.accentYellow,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.6,
     shadowRadius: 20,
+    elevation: 10,
   },
-  buttonLabel: {
-    color: "black",
-    fontWeight: "bold",
-    fontSize: 20,
-    marginTop: 10,
+  buttonLabel: { color: "black", fontWeight: "900", fontSize: 24 },
+
+  // Banner Vittoria Inclinato
+  winnerBannerContainer: {
+    position: "absolute",
+    top: 180,
+    width: "100%",
+    alignItems: "center",
+    zIndex: 10, // Z-index alto per stare sopra tutto
   },
-  leaderboard: {
+  winnerBanner: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "black",
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    transform: [{ rotate: "-5deg" }], // L'inclinazione!
+    borderWidth: 3,
+    borderColor: COLORS.accentYellow,
+    // Glow intenso
+    shadowColor: COLORS.accentYellow,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 30,
+    elevation: 20,
+  },
+  winnerBannerText: {
+    color: COLORS.textWhite,
+    fontSize: 32,
+    fontWeight: "900",
+    fontStyle: "italic",
+  },
+
+  // Leaderboard
+  leaderboardContainer: {
     flex: 1,
     width: "100%",
-    marginTop: 50,
-    backgroundColor: "#1e1e1e",
+    backgroundColor: COLORS.cardGray,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     padding: 25,
   },
   leaderboardTitle: {
-    color: "#888",
+    color: COLORS.textWhite,
+    fontSize: 20,
     fontWeight: "bold",
-    textAlign: "center",
     marginBottom: 20,
   },
-  scrollContent: { paddingBottom: 40 },
   scoreRow: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -172,21 +269,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#333",
   },
-  nameText: { color: "white", fontSize: 18 },
-  scoreText: { color: "#FFD700", fontSize: 22, fontWeight: "bold" },
-  winnerOverlay: {
-    position: "absolute",
-    top: 150,
-    zIndex: 10,
-    alignItems: "center",
-    width: "100%",
-  },
-  winnerTitle: {
-    fontSize: 28,
-    fontWeight: "900",
-    color: "#FFD700",
-    textShadowColor: "rgba(0, 0, 0, 0.75)",
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 10,
+  winnerRow: { backgroundColor: "#332b00" }, // Leggero sfondo giallo per il vincitore
+  nameText: { color: COLORS.textWhite, fontSize: 18 },
+  scoreText: { color: COLORS.textWhite, fontSize: 22, fontWeight: "bold" },
+  scrollContent: {
+    paddingBottom: 40, // Ensures the last items aren't cut off at the bottom
   },
 });
