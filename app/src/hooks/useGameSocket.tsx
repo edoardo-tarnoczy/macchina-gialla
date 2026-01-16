@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Leaderboard, GameMessage } from "../types/app.types";
-
-const BASE_WS_URL = "ws://192.168.1.69:8000/ws";
+import { CONFIG } from "../config";
 
 export const useGameSocket = (roomCode: string, username: string) => {
   const [scores, setScores] = useState<Leaderboard>({});
@@ -13,7 +12,7 @@ export const useGameSocket = (roomCode: string, username: string) => {
     // Reset winner if room/user changes
     setWinner(null);
 
-    socket.current = new WebSocket(`${BASE_WS_URL}/${roomCode}/${username}`);
+    socket.current = new WebSocket(`${CONFIG.WS_URL}/${roomCode}/${username}`);
 
     socket.current.onopen = () => setIsConnected(true);
     socket.current.onclose = () => setIsConnected(false);

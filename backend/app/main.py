@@ -65,6 +65,21 @@ def export_types_dummy():
         "winner": None
     }
 
+
+@app.post("/rooms/{room_code}/reset")
+def reset_room(room_code: str, session: Session = Depends(get_session)):
+    room = session.exec(select(Room).where(Room.code == room_code)).first()
+    if not room:
+        raise HTTPException(status_code=404, detail="Room not found")
+
+    # Reset all scores in this room to 0
+    for score in room.scores:
+        score.points = 0
+        session.add(score)
+
+    session.commit()
+    return {"status": "reset_success"}
+
 @app.websocket("/ws/{room_code}/{username}")
 async def websocket_endpoint(websocket: WebSocket, room_code: str, username: str, session: Session = Depends(get_session)):
     room = session.exec(select(Room).where(Room.code == room_code)).first()
@@ -109,11 +124,18 @@ async def websocket_endpoint(websocket: WebSocket, room_code: str, username: str
                 all_room_scores = session.exec(select(Score).where(Score.room_id == room.id)).all()
                 updated_leaderboard = {s.user.username: s.points for s in all_room_scores}
 
-                # Broadcast a tutti
-                await manager.broadcast_to_room(room_code, {
-                    "type": "SCORE_UPDATE",
-                    "scores": updated_leaderboard
-                })
+                win_limit = 10
+                if score_entry.points > win_limit:
+                    await manager.broadcast_to_room(room_code, {
+                        "type": "WINNER_DECLARED",
+                        "scores": updated_leaderboard,
+                        "winner": username
+                    })
+                else:
+                    await manager.broadcast_to_room(room_code, {
+                        "type": "SCORE_UPDATE",
+                        "scores": updated_leaderboard
+                    })
     except WebSocketDisconnect:
         manager.disconnect(websocket, room_code)
         print(f"User {username} left.")
