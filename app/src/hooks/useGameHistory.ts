@@ -13,13 +13,10 @@ export function useGameHistory() {
         ? JSON.parse(existingHistory)
         : [];
 
-      // 1. Remove the room if it already exists (to move it to the top)
       history = history.filter((item) => item.code !== roomCode);
 
-      // 2. Add the new room at the beginning
       history.unshift({ code: roomCode, createdAt: new Date().toISOString() });
 
-      // 3. Limit to last 5 rooms
       const limitedHistory = history.slice(0, 5);
 
       await AsyncStorage.setItem(

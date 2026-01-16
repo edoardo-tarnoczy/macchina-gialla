@@ -98,7 +98,7 @@ export default function GameScreen({ route, navigation }: Props) {
             onPressOut={handlePressOut}
             onPress={onBump}
             disabled={!!winner}
-            style={styles.mainButtonSquare} // Stile aggiornato
+            style={styles.mainButtonSquare}
           >
             <Car
               size={80}
@@ -125,7 +125,6 @@ export default function GameScreen({ route, navigation }: Props) {
                 style={[styles.scoreRow, name === winner && styles.winnerRow]}
               >
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  {/* Aggiungi una stella o corona per il primo in classifica */}
                   {index === 0 && <Text style={{ marginRight: 5 }}>⭐</Text>}
                   <Text
                     style={[
@@ -154,11 +153,11 @@ export default function GameScreen({ route, navigation }: Props) {
       {winner && (
         <ConfettiCannon
           count={200}
-          origin={{ x: width / 2, y: -20 }} // Starts just above the screen
+          origin={{ x: width / 2, y: -20 }}
           fadeOut={true}
           fallSpeed={3000}
           explosionSpeed={350}
-          colors={["#FFD700", "#FFA500", "#FFFFFF", "#333333"]} // Yellow, Orange, White, Grey
+          colors={["#FFD700", "#FFA500", "#FFFFFF", "#333333"]}
           autoStart={true}
         />
       )}
@@ -197,16 +196,14 @@ const styles = StyleSheet.create({
   },
   roomCodeText: { color: "#CCC", fontWeight: "600" },
 
-  // Bottone Centrale Quadrato
   mainButtonContainer: { alignItems: "center", marginBottom: 50, zIndex: 1 },
   mainButtonSquare: {
     width: 200,
     height: 200,
-    borderRadius: 35, // Quadrato arrotondato
+    borderRadius: 35,
     backgroundColor: COLORS.accentYellow,
     justifyContent: "center",
     alignItems: "center",
-    // Ombra gialla per effetto "glow"
     shadowColor: COLORS.accentYellow,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.6,
@@ -215,13 +212,12 @@ const styles = StyleSheet.create({
   },
   buttonLabel: { color: "black", fontWeight: "900", fontSize: 24 },
 
-  // Banner Vittoria Inclinato
   winnerBannerContainer: {
     position: "absolute",
     top: 180,
     width: "100%",
     alignItems: "center",
-    zIndex: 10, // Z-index alto per stare sopra tutto
+    zIndex: 10,
   },
   winnerBanner: {
     flexDirection: "row",
@@ -230,10 +226,9 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     paddingVertical: 15,
     paddingHorizontal: 40,
-    transform: [{ rotate: "-5deg" }], // L'inclinazione!
+    transform: [{ rotate: "-5deg" }],
     borderWidth: 3,
     borderColor: COLORS.accentYellow,
-    // Glow intenso
     shadowColor: COLORS.accentYellow,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
@@ -247,7 +242,6 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
   },
 
-  // Leaderboard
   leaderboardContainer: {
     flex: 1,
     width: "100%",
@@ -269,10 +263,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#333",
   },
-  winnerRow: { backgroundColor: "#332b00" }, // Leggero sfondo giallo per il vincitore
+  winnerRow: { backgroundColor: "#332b00" },
   nameText: { color: COLORS.textWhite, fontSize: 18 },
   scoreText: { color: COLORS.textWhite, fontSize: 22, fontWeight: "bold" },
   scrollContent: {
-    paddingBottom: 40, // Ensures the last items aren't cut off at the bottom
+    paddingBottom: 40,
   },
 });

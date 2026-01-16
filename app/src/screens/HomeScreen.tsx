@@ -272,7 +272,6 @@ const styles = StyleSheet.create({
   },
   mainActionBtnText: { color: "black", fontWeight: "900", fontSize: 16 },
 
-  // Sezione Storico (Prende lo spazio rimanente)
   historySection: { flex: 1, paddingHorizontal: 20, marginTop: 10 },
   historyHeader: {
     flexDirection: "row",
