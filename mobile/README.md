@@ -1,6 +1,6 @@
 # Macchina Gialla Mobile
 
-The React Native client uses Expo, Expo Router, and strict TypeScript. Its interface is being built incrementally with the **Tarmac Apex** design system.
+The React Native client uses Expo, Expo Router, and strict TypeScript. Its interface is being built incrementally with the **Macchina Gialla UI** design system.
 
 ## Current state
 
@@ -58,7 +58,7 @@ To start Expo in LAN mode with the backend, run `npm run dev` from the repositor
 
 Before building a screen, inspect its corresponding view in [homepage.html](src/mockups/homepage.html). It contains homepage, history, profile, game, winner, modal, and navigation references. You can open the HTML in a browser; its fonts and Tailwind styling require internet access.
 
-Translate the reference into React Native primitives using [tokens.ts](src/theme/tokens.ts) and the [Tarmac Apex specification](../DEISGN.md):
+Translate the reference into React Native primitives using [tokens.ts](src/theme/tokens.ts) and the [Macchina Gialla UI specification](../DEISGN.md):
 
 - Use `StyleSheet.create` and semantic tokens, not Tailwind or NativeWind.
 - Reuse UI primitives rather than repeating typography and card styling.

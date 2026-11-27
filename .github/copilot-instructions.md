@@ -13,7 +13,7 @@ The developer is building this project to **learn React Native (Expo), Design Sy
 - **Explicit Code Override:** Only provide full, working implementations when the user explicitly asks _"provide the code"_, _"show me the full implementation"_, or asks to debug code they wrote.
 - **Placeholder Scope:** When fixing navigation or rendering errors, distinguish minimal route placeholders from finished screens. Do not treat a running app as a completed visual implementation.
 
-## 2. Design System ("Tarmac Apex" — See `DESIGN.md`)
+## 2. Design System ("Macchina Gialla UI" — See `DESIGN.md`)
 
 - **Visual Reference:** Read the relevant HTML mockup in `mobile/src/mockups/` before guiding or implementing a screen. `mobile/src/mockups/homepage.html` contains the homepage, history, profile, game, winner, modal, and bottom-navigation references. Use it to explain screen structure, icon choices, hierarchy, copy, and interactions, and compare the native result with the relevant view.
 - **Native Translation:** Mockup HTML, Tailwind classes, CSS, and JavaScript are visual references, not mobile implementation code. Translate them into React Native primitives and semantic tokens. Follow the design-system rules and token values when mockup styling differs; identify missing tokens rather than hardcoding replacements. Treat sample players, scores, and rooms as mock data, not live backend state.

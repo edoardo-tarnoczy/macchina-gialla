@@ -1,6 +1,6 @@
 # Macchina Gialla
 
-Macchina Gialla is a multiplayer yellow-car spotting game with a React Native/Expo client and a FastAPI backend. The mobile client is being built incrementally with the Tarmac Apex design system; its screens are currently placeholders, not a complete game interface.
+Macchina Gialla is a multiplayer yellow-car spotting game with a React Native/Expo client and a FastAPI backend. The mobile client is being built incrementally with the Macchina Gialla UI design system; its screens are currently placeholders, not a complete game interface.
 
 ## Repository structure
 
@@ -10,14 +10,14 @@ Macchina Gialla is a multiplayer yellow-car spotting game with a React Native/Ex
 │   └── src/
 │       ├── app/         # Screens and navigation layouts
 │       ├── components/ui/ # Reusable native UI primitives
-│       ├── theme/       # Tarmac Apex semantic tokens
+│       ├── theme/       # Macchina Gialla UI semantic tokens
 │       └── mockups/     # HTML visual and interaction references
 ├── backend/             # FastAPI + SQLModel server; see backend/README.md
 ├── shared/
 │   └── openapi.json     # Backend API schema used to generate app types
 ├── .bruno/              # Bruno API request collection
 ├── .github/             # Copilot project instructions and skills
-├── DEISGN.md            # Tarmac Apex design specification
+├── DEISGN.md            # Macchina Gialla UI design specification
 ├── docker-compose.yaml  # Container setup for the backend
 └── package.json         # Root development and type-generation commands
 ```

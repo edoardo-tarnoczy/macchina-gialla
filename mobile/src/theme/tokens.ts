@@ -1,5 +1,5 @@
 // mobile/theme/tokens.ts
-// Generated from DESIGN.md ("Tarmac Apex" Design System)
+// Generated from DESIGN.md ("Macchina Gialla UI" Design System)
 
 import { TextStyle, ViewStyle } from "react-native";
 

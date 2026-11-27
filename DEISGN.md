@@ -1,5 +1,5 @@
 ---
-name: Tarmac Apex
+name: Macchina Gialla UI
 colors:
   surface: "#131313"
   surface-dim: "#131313"
