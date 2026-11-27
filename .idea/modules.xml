@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/macchina-gialla.iml" filepath="$PROJECT_DIR$/.idea/macchina-gialla.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/macchina-gialla-backend.iml" filepath="$PROJECT_DIR$/.idea/macchina-gialla-backend.iml" />
     </modules>
   </component>
 </project>

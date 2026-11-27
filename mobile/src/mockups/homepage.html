@@ -1,0 +1,2703 @@
+<!doctype html>
+<html class="dark" lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+      name="viewport"
+    />
+    <title>Macchina Gialla — Roadtrip Edition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Chivo:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400..700,0..1,0"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              surface: "#131313",
+              "surface-dim": "#131313",
+              "surface-container-lowest": "#0e0e0e",
+              "surface-container-low": "#1c1b1b",
+              "surface-container": "#201f1f",
+              "surface-container-high": "#2a2a2a",
+              "surface-container-highest": "#353534",
+              "surface-bright": "#393939",
+              "on-surface": "#e5e2e1",
+              "on-surface-variant": "#d0c6ab",
+              outline: "#999077",
+              "outline-variant": "#4d4632",
+              primary: "#fff5dc",
+              "primary-container": "#ffd600",
+              "primary-fixed": "#ffe170",
+              "primary-fixed-dim": "#e9c400",
+              "on-primary": "#3a3000",
+              "on-primary-container": "#221b00",
+              secondary: "#b9c8de",
+              "secondary-container": "#39485a",
+              "on-secondary-container": "#d4e4fa",
+              tertiary: "#fff2f1",
+              "tertiary-container": "#ffcdc9",
+              "on-tertiary-container": "#b91a24",
+              "tertiary-fixed-dim": "#ffb3ad",
+              error: "#ffb4ab",
+              "error-container": "#93000a",
+            },
+            fontFamily: {
+              display: ["Space Grotesk", "sans-serif"],
+              body: ["Chivo", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      @layer base {
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+          background-color: #090909;
+          color: #e5e2e1;
+          font-family: "Chivo", sans-serif;
+          overscroll-behavior: none;
+          -webkit-tap-highlight-color: transparent;
+        }
+      }
+
+      ::-webkit-scrollbar {
+        display: none;
+      }
+
+      .pb-safe {
+        padding-bottom: env(safe-area-inset-bottom, 12px);
+      }
+
+      .pt-safe {
+        padding-top: env(safe-area-inset-top, 0px);
+      }
+
+      /* Tactile 3D Button Physics */
+      .btn-taxi {
+        box-shadow:
+          0 5px 0 #b29500,
+          0 10px 20px rgba(0, 0, 0, 0.45);
+        transition:
+          transform 0.08s ease,
+          box-shadow 0.08s ease;
+      }
+      .btn-taxi:active {
+        transform: translateY(4px);
+        box-shadow:
+          0 1px 0 #b29500,
+          0 4px 10px rgba(0, 0, 0, 0.4);
+      }
+
+      .btn-asphalt {
+        box-shadow:
+          0 5px 0 #0a0a0a,
+          0 10px 20px rgba(0, 0, 0, 0.55);
+        transition:
+          transform 0.08s ease,
+          box-shadow 0.08s ease;
+      }
+      .btn-asphalt:active {
+        transform: translateY(4px);
+        box-shadow:
+          0 1px 0 #0a0a0a,
+          0 4px 10px rgba(0, 0, 0, 0.4);
+      }
+
+      /* Hazard Stripes Cockpit Frame */
+      .hazard-collar {
+        background-image: repeating-linear-gradient(
+          45deg,
+          #141414,
+          #141414 10px,
+          #242218 10px,
+          #242218 20px
+        );
+      }
+
+      /* Floating +1 Animation */
+      @keyframes floatUpFade {
+        0% {
+          opacity: 1;
+          transform: translateY(0) scale(0.9);
+        }
+        50% {
+          opacity: 1;
+          transform: translateY(-28px) scale(1.08);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-54px) scale(1);
+        }
+      }
+      .animate-spot-badge {
+        animation: floatUpFade 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      }
+
+      @keyframes slideUpModal {
+        from {
+          transform: translateY(100%);
+        }
+        to {
+          transform: translateY(0);
+        }
+      }
+      .animate-sheet {
+        animation: slideUpModal 0.26s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      @keyframes fadeInView {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .view-enter {
+        animation: fadeInView 0.2s ease-out forwards;
+      }
+
+      .icon-fill {
+        font-variation-settings:
+          "FILL" 1,
+          "wght" 600,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+    </style>
+  </head>
+
+  <body class="flex justify-center min-h-screen bg-[#090909] select-none">
+    <!-- Mobile Device Shell (Centered on desktop, full width on mobile) -->
+    <div
+      id="app-shell"
+      class="relative w-full max-w-[430px] min-h-screen bg-surface text-on-surface flex flex-col shadow-[0_0_60px_rgba(0,0,0,0.85)] sm:border-x sm:border-surface-container-high overflow-x-hidden"
+    >
+      <!-- =================================================================== -->
+      <!-- VIEW 1: DASHBOARD / HOME VIEW                                       -->
+      <!-- =================================================================== -->
+      <div id="view-home" class="flex-1 flex flex-col min-h-screen view-enter">
+        <!-- Clean Unified Top Header (No Fake OS Status Bar) -->
+        <header
+          class="sticky top-0 z-30 bg-surface/90 backdrop-blur-xl pt-safe border-b border-surface-container-high/60"
+        >
+          <div class="h-16 px-4 flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <!-- Custom Brand Taxi-Stripe Emblem -->
+              <div
+                class="w-9 h-9 rounded-xl bg-primary-container flex items-center justify-center shadow-md shadow-primary-container/20 shrink-0"
+              >
+                <svg
+                  class="w-6 h-6 text-on-primary-container"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.85 7h10.29l1.08 3.11H5.77L6.85 7zM19 17H5v-5h14v5z"
+                  />
+                  <circle cx="7.5" cy="14.5" r="1.5" />
+                  <circle cx="16.5" cy="14.5" r="1.5" />
+                </svg>
+              </div>
+              <div class="flex flex-col">
+                <span
+                  class="font-display font-bold text-[17px] uppercase tracking-tight text-on-surface leading-none"
+                  >Macchina Gialla</span
+                >
+                <span
+                  class="font-display font-bold text-[10px] uppercase tracking-widest text-primary-container mt-1 leading-none"
+                  >Cockpit Giocatore</span
+                >
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <div
+                class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high"
+              >
+                <span
+                  class="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"
+                ></span>
+                <span
+                  class="font-display font-bold text-[10px] tracking-wider text-on-surface uppercase"
+                  >ONLINE</span
+                >
+              </div>
+              <button
+                onclick="switchTab('profile')"
+                class="relative w-9 h-9 rounded-full bg-secondary-container border border-primary-container/50 flex items-center justify-center font-display font-bold text-xs text-on-secondary-container active:scale-95 transition-transform"
+                title="Profilo Matteo"
+              >
+                MT
+                <span
+                  class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-primary-container ring-2 ring-surface"
+                ></span>
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <!-- Home Main Content -->
+        <main class="flex-1 flex flex-col px-4 pt-4 pb-28 gap-5">
+          <!-- Pinned "Rientra in Corsa" Live Match Highlight Banner -->
+          <div
+            onclick="openGameRoom('milano')"
+            role="button"
+            tabindex="0"
+            class="group relative flex items-center justify-between p-3.5 rounded-xl bg-surface-container-high border border-primary-container/50 shadow-lg cursor-pointer active:scale-[0.99] transition-all overflow-hidden"
+          >
+            <div
+              class="absolute left-0 top-0 bottom-0 w-1.5 bg-primary-container"
+            ></div>
+            <div class="flex items-center gap-3 pl-1 min-w-0">
+              <div
+                class="w-10 h-10 rounded-lg bg-primary-container/15 text-primary-container flex items-center justify-center shrink-0"
+              >
+                <span class="material-symbols-outlined icon-fill text-[22px]"
+                  >directions_car</span
+                >
+              </div>
+              <div class="flex flex-col min-w-0">
+                <div class="flex items-center gap-1.5">
+                  <span
+                    class="w-2 h-2 rounded-full bg-primary-container animate-ping"
+                  ></span>
+                  <span
+                    class="font-display font-bold text-[10px] uppercase tracking-widest text-primary-container"
+                    >Rientra in Corsa • Live</span
+                  >
+                </div>
+                <span
+                  id="banner-room-title"
+                  class="font-display font-bold text-[16px] text-on-surface uppercase truncate mt-0.5"
+                  >Milano Roadtrip</span
+                >
+                <span
+                  id="banner-room-subtitle"
+                  class="text-xs text-on-surface-variant truncate"
+                  >Sei 2° con 14 pt • -2 dal leader</span
+                >
+              </div>
+            </div>
+            <div
+              class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-primary-container text-on-primary-container font-display font-bold text-xs uppercase shrink-0 group-hover:translate-x-0.5 transition-transform"
+            >
+              <span>Gioca</span>
+              <span class="material-symbols-outlined text-[16px]"
+                >arrow_forward</span
+              >
+            </div>
+          </div>
+
+          <!-- Dual Tactile Cockpit Pads -->
+          <section class="grid grid-cols-2 gap-3.5">
+            <!-- Pad A: Crea Stanza -->
+            <button
+              id="btn-open-create"
+              type="button"
+              class="btn-taxi relative flex flex-col justify-between p-4 rounded-xl bg-primary-container text-on-primary-container text-left overflow-hidden min-h-[140px]"
+            >
+              <div
+                class="absolute inset-x-0 top-0 h-1 bg-white/35 rounded-t-xl"
+              ></div>
+              <div class="flex items-center justify-between w-full">
+                <div
+                  class="w-9 h-9 rounded-lg bg-on-primary-container/10 flex items-center justify-center"
+                >
+                  <span
+                    class="material-symbols-outlined icon-fill text-[22px] text-on-primary-container"
+                    >add_circle</span
+                  >
+                </div>
+                <span
+                  class="font-display font-bold text-[10px] uppercase tracking-widest text-on-primary-container/75"
+                  >HOST</span
+                >
+              </div>
+              <div class="flex flex-col gap-1 mt-3">
+                <span
+                  class="font-display font-bold text-[21px] uppercase leading-none tracking-tight text-on-primary-container"
+                >
+                  Crea<br />Stanza
+                </span>
+                <span
+                  class="text-xs text-on-primary-container/85 font-medium leading-snug"
+                >
+                  Sfida gli amici in viaggio
+                </span>
+              </div>
+            </button>
+
+            <!-- Pad B: Entra con Codice -->
+            <button
+              id="btn-open-join"
+              type="button"
+              class="btn-asphalt relative flex flex-col justify-between p-4 rounded-xl bg-surface-container text-primary-container text-left overflow-hidden min-h-[140px]"
+            >
+              <div
+                class="absolute inset-x-0 top-0 h-1 bg-primary-container rounded-t-xl"
+              ></div>
+              <div class="flex items-center justify-between w-full">
+                <div
+                  class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center"
+                >
+                  <span
+                    class="material-symbols-outlined text-[21px] text-primary-container"
+                    >pin</span
+                  >
+                </div>
+                <span
+                  class="font-display font-bold text-[10px] uppercase tracking-widest text-on-surface-variant"
+                  >PIN</span
+                >
+              </div>
+              <div class="flex flex-col gap-1 mt-3">
+                <span
+                  class="font-display font-bold text-[21px] uppercase leading-none tracking-tight text-primary-container"
+                >
+                  Entra con<br />Codice
+                </span>
+                <span
+                  class="text-xs text-on-surface-variant font-medium leading-snug"
+                >
+                  Inserisci PIN a 6 cifre
+                </span>
+              </div>
+            </button>
+          </section>
+
+          <!-- Compact Single-Row Telemetry Strip -->
+          <div
+            class="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-surface-container-low border border-surface-container-high text-xs"
+          >
+            <div class="flex items-center gap-1.5">
+              <span
+                class="material-symbols-outlined text-[16px] text-primary-container"
+                >speed</span
+              >
+              <span class="font-display font-bold text-on-surface"
+                ><span id="stat-total-spotted">148</span> Avvistate</span
+              >
+            </div>
+            <span class="text-outline-variant">•</span>
+            <div class="font-display font-bold text-on-surface-variant">
+              64% Vittorie
+            </div>
+            <span class="text-outline-variant">•</span>
+            <div
+              class="flex items-center gap-1 font-display font-bold text-primary-container"
+            >
+              <span class="material-symbols-outlined icon-fill text-[15px]"
+                >local_fire_department</span
+              >
+              <span>5g Streak</span>
+            </div>
+          </div>
+
+          <!-- Active Rooms List -->
+          <section class="flex flex-col gap-3">
+            <div class="flex items-center justify-between px-0.5">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-primary-container"></span>
+                <h2
+                  class="font-display font-bold text-sm uppercase tracking-wider text-on-surface"
+                >
+                  Stanze Attive
+                  <span
+                    id="active-rooms-count"
+                    class="text-on-surface-variant font-normal"
+                    >(3)</span
+                  >
+                </h2>
+              </div>
+              <button
+                id="btn-refresh-rooms"
+                type="button"
+                aria-label="Aggiorna stanze"
+                class="w-8 h-8 rounded-lg bg-surface-container-high text-on-surface-variant hover:text-primary-container flex items-center justify-center active:scale-95 transition-all"
+              >
+                <span class="material-symbols-outlined text-[18px]">sync</span>
+              </button>
+            </div>
+
+            <div id="rooms-list-container" class="flex flex-col gap-3">
+              <!-- Populated dynamically via JS -->
+            </div>
+          </section>
+        </main>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- VIEW 2: STORICO / MATCH HISTORY VIEW                                -->
+      <!-- =================================================================== -->
+      <div
+        id="view-history"
+        class="hidden flex-1 flex flex-col min-h-screen view-enter"
+      >
+        <header
+          class="sticky top-0 z-30 bg-surface/90 backdrop-blur-xl pt-safe border-b border-surface-container-high/60"
+        >
+          <div class="h-16 px-4 flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <span
+                class="material-symbols-outlined icon-fill text-primary-container text-[24px]"
+                >emoji_events</span
+              >
+              <h1
+                class="font-display font-bold text-lg uppercase tracking-tight text-on-surface"
+              >
+                Storico Corse
+              </h1>
+            </div>
+            <span
+              class="px-2.5 py-1 rounded-full bg-surface-container-high font-display font-bold text-[10px] uppercase tracking-wider text-primary-container"
+              >Stagione 2026</span
+            >
+          </div>
+        </header>
+
+        <main class="flex-1 flex flex-col px-4 pt-4 pb-28 gap-3.5">
+          <p class="text-xs text-on-surface-variant">
+            Tocca una sessione conclusa per rivedere il podio e le statistiche
+            ufficiali.
+          </p>
+
+          <!-- Completed Match Card (Opens Winner Podium) -->
+          <article
+            onclick="openWinnerScreen()"
+            role="button"
+            tabindex="0"
+            class="btn-asphalt relative flex flex-col p-4 rounded-xl bg-surface-container cursor-pointer overflow-hidden"
+          >
+            <div
+              class="absolute inset-x-0 top-0 h-1 bg-primary-container"
+            ></div>
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span
+                    class="font-display font-bold text-lg text-on-surface uppercase"
+                    >Milano Roadtrip 🏎️</span
+                  >
+                </div>
+                <span class="text-xs text-on-surface-variant"
+                  >Conclusa oggi • 4 Giocatori • 64 Gialle totali</span
+                >
+              </div>
+              <span
+                class="px-2 py-0.5 rounded bg-secondary-container text-on-secondary-container font-display font-bold text-[11px]"
+                >🥈 2° POSTO</span
+              >
+            </div>
+            <div
+              class="mt-3 pt-2.5 border-t border-surface-container-high flex items-center justify-between text-xs"
+            >
+              <span class="text-on-surface-variant"
+                >Vincitore:
+                <strong id="history-winner-name" class="text-primary-container"
+                  >Marco V.</strong
+                ></span
+              >
+              <span
+                class="flex items-center gap-1 font-display font-bold text-primary-container uppercase"
+                >Vedi Podio
+                <span class="material-symbols-outlined text-[16px]"
+                  >chevron_right</span
+                ></span
+              >
+            </div>
+          </article>
+
+          <!-- Past Match 2 -->
+          <article
+            onclick="openWinnerScreen()"
+            role="button"
+            tabindex="0"
+            class="flex flex-col p-4 rounded-xl bg-surface-container-low border border-surface-container-high cursor-pointer active:scale-[0.99] transition-transform"
+          >
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <span
+                  class="font-display font-bold text-base text-on-surface uppercase"
+                  >Passo dello Stelvio Drift 🏔️</span
+                >
+                <p class="text-xs text-on-surface-variant mt-0.5">
+                  Domenica scorsa • 3 Giocatori • 31 Gialle totali
+                </p>
+              </div>
+              <span
+                class="px-2 py-0.5 rounded bg-primary-container text-on-primary-container font-display font-bold text-[11px]"
+                >🥇 1° POSTO</span
+              >
+            </div>
+          </article>
+        </main>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- VIEW 3: PROFILO DRIVER VIEW                                         -->
+      <!-- =================================================================== -->
+      <div
+        id="view-profile"
+        class="hidden flex-1 flex flex-col min-h-screen view-enter"
+      >
+        <header
+          class="sticky top-0 z-30 bg-surface/90 backdrop-blur-xl pt-safe border-b border-surface-container-high/60"
+        >
+          <div class="h-16 px-4 flex items-center justify-between">
+            <h1
+              class="font-display font-bold text-lg uppercase tracking-tight text-on-surface"
+            >
+              Patente Avvistatore
+            </h1>
+            <span
+              class="px-2.5 py-1 rounded-full bg-primary-container/15 text-primary-container font-display font-bold text-[10px] uppercase tracking-wider"
+              >TIER 1 SPOTTER</span
+            >
+          </div>
+        </header>
+
+        <main class="flex-1 flex flex-col px-4 pt-5 pb-28 gap-4">
+          <div
+            class="flex items-center gap-4 p-4 rounded-xl bg-surface-container border border-surface-container-high"
+          >
+            <div
+              class="w-16 h-16 rounded-full bg-secondary-container border-2 border-primary-container flex items-center justify-center font-display font-bold text-xl text-on-secondary-container"
+            >
+              MT
+            </div>
+            <div>
+              <h2 class="font-display font-bold text-xl text-on-surface">
+                Matteo R.
+              </h2>
+              <p class="text-xs text-on-surface-variant">
+                Co-pilota Ufficiale • Membro da Maggio 2025
+              </p>
+              <div class="flex items-center gap-2 mt-2">
+                <span
+                  class="px-2 py-0.5 rounded bg-primary-container text-on-primary-container font-display font-bold text-[10px] uppercase"
+                  >2.450 XP</span
+                >
+                <span
+                  class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-display font-bold text-[10px] uppercase"
+                  >98% Precisione</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div
+              class="p-4 rounded-xl bg-surface-container-low border border-surface-container-high"
+            >
+              <span
+                class="font-display font-bold text-[11px] uppercase tracking-wider text-on-surface-variant"
+                >Gialle Avvistate</span
+              >
+              <div
+                id="profile-total-spots"
+                class="font-display font-bold text-3xl text-primary-container mt-1"
+              >
+                148
+              </div>
+            </div>
+            <div
+              class="p-4 rounded-xl bg-surface-container-low border border-surface-container-high"
+            >
+              <span
+                class="font-display font-bold text-[11px] uppercase tracking-wider text-on-surface-variant"
+                >Corse Vinte</span
+              >
+              <div class="font-display font-bold text-3xl text-on-surface mt-1">
+                18 / 28
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- VIEW 4: LIVE GAME ROOM VIEW                                         -->
+      <!-- =================================================================== -->
+      <div
+        id="view-game"
+        class="hidden flex-1 flex-col min-h-screen view-enter bg-surface"
+      >
+        <!-- Merged Single Top Header -->
+        <header
+          class="sticky top-0 z-30 bg-surface/95 backdrop-blur-xl pt-safe border-b border-surface-container-high"
+        >
+          <div class="h-16 px-3 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-1.5 min-w-0">
+              <button
+                onclick="navigateTo('home')"
+                aria-label="Torna alla dashboard"
+                class="w-10 h-10 rounded-lg flex items-center justify-center text-on-surface hover:text-primary-container active:scale-95 transition-all shrink-0"
+              >
+                <span class="material-symbols-outlined text-[22px]"
+                  >arrow_back_ios_new</span
+                >
+              </button>
+              <div class="flex flex-col min-w-0">
+                <div class="flex items-center gap-1.5">
+                  <span
+                    class="w-2 h-2 rounded-full bg-primary-container animate-pulse shrink-0"
+                  ></span>
+                  <h1
+                    id="game-room-title"
+                    class="font-display font-bold text-[17px] uppercase tracking-tight text-on-surface truncate"
+                  >
+                    Milano Roadtrip
+                  </h1>
+                </div>
+                <span
+                  id="game-room-mode-badge"
+                  class="font-display font-bold text-[10px] uppercase tracking-wider text-on-surface-variant"
+                  >4 Giocatori • A Tempo</span
+                >
+              </div>
+            </div>
+
+            <!-- Room PIN Copy + Termina Partita -->
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button
+                id="btn-copy-pin"
+                type="button"
+                class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright active:scale-95 transition-all"
+                title="Copia codice PIN"
+              >
+                <span
+                  id="game-room-pin"
+                  class="font-display font-bold text-xs text-primary-container tracking-wider"
+                  >#MIL-882</span
+                >
+                <span
+                  class="material-symbols-outlined text-[14px] text-on-surface-variant"
+                  >content_copy</span
+                >
+              </button>
+              <button
+                onclick="openWinnerScreen()"
+                type="button"
+                class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-error-container/80 hover:bg-error-container text-error font-display font-bold text-[11px] uppercase tracking-wide active:scale-95 transition-all"
+                title="Termina partita e vedi podio"
+              >
+                <span class="material-symbols-outlined text-[15px]"
+                  >sports_score</span
+                >
+                <span>Fine</span>
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <!-- Game Main Scrollable Body -->
+        <main class="flex-1 flex flex-col px-4 pt-3 pb-44 gap-3.5">
+          <!-- Compact Live Standings Card -->
+          <section
+            class="flex flex-col rounded-xl bg-surface-container p-3.5 shadow-lg border border-surface-container-high"
+          >
+            <!-- Session Progress Header -->
+            <div class="flex flex-col gap-1.5 mb-3">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1.5">
+                  <span
+                    class="material-symbols-outlined icon-fill text-primary-container text-[18px]"
+                    >leaderboard</span
+                  >
+                  <span
+                    class="font-display font-bold text-xs uppercase tracking-wider text-on-surface"
+                    >Classifica Live</span
+                  >
+                </div>
+                <div
+                  class="flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-lowest border border-outline-variant/30"
+                >
+                  <span
+                    class="material-symbols-outlined text-[13px] text-primary-container"
+                    >timer</span
+                  >
+                  <span
+                    id="game-progress-label"
+                    class="font-display font-bold text-[11px] text-primary-container tracking-wider uppercase"
+                    >14h 22m rimasti • 42%</span
+                  >
+                </div>
+              </div>
+              <div
+                class="w-full h-1.5 bg-surface-container-lowest rounded-full overflow-hidden"
+              >
+                <div
+                  id="game-progress-bar"
+                  class="h-full bg-primary-container rounded-full transition-all duration-500"
+                  style="width: 42%"
+                ></div>
+              </div>
+            </div>
+
+            <!-- Dynamic Ranked Leaderboard List -->
+            <div id="game-leaderboard" class="flex flex-col gap-2">
+              <!-- Rendered dynamically by JS -->
+            </div>
+          </section>
+
+          <!-- Interactive Live Telemetry & Dispute Feed -->
+          <section
+            class="flex flex-col rounded-xl bg-surface-container-low p-3 border border-surface-container-high/70"
+          >
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-1.5">
+                <span
+                  class="w-2 h-2 rounded-full bg-primary-container animate-pulse"
+                ></span>
+                <span
+                  class="font-display font-bold text-[11px] uppercase tracking-wider text-on-surface-variant"
+                  >Telemetria &amp; Controllo VAR</span
+                >
+              </div>
+              <span class="text-[10px] text-outline"
+                >Contesta falsi avvistamenti</span
+              >
+            </div>
+
+            <div id="game-telemetry-feed" class="flex flex-col gap-2">
+              <!-- Rendered dynamically by JS -->
+            </div>
+          </section>
+        </main>
+
+        <!-- Sticky Thumb-Accessible Hero Action Zone -->
+        <div
+          class="fixed bottom-0 inset-x-0 z-30 flex justify-center pointer-events-none"
+        >
+          <div
+            class="w-full max-w-[430px] px-4 pt-3 pb-safe bg-gradient-to-t from-surface via-surface/95 to-transparent pointer-events-auto flex flex-col items-center"
+          >
+            <!-- Floating Particle Slot -->
+            <div
+              id="spot-particle-slot"
+              class="relative w-full flex justify-center pointer-events-none"
+            ></div>
+
+            <!-- Hazard Stripes Cockpit Collar -->
+            <div
+              class="hazard-collar w-full p-2 rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.85)] border border-surface-container-high"
+            >
+              <div
+                class="w-full rounded-full p-1.5 bg-surface-container-high flex items-center justify-center"
+              >
+                <button
+                  id="btn-spot-yellow"
+                  type="button"
+                  class="relative w-full py-4 px-4 rounded-full bg-primary-container text-on-primary-container shadow-[0_6px_0_#b29500,0_10px_24px_rgba(255,214,0,0.35)] active:translate-y-1 active:shadow-[0_2px_0_#b29500] transition-all flex flex-col items-center justify-center overflow-hidden cursor-pointer"
+                >
+                  <div
+                    class="absolute top-0 inset-x-0 h-1/2 bg-white/25 rounded-t-full pointer-events-none"
+                  ></div>
+                  <div class="flex items-center gap-2 z-10">
+                    <span
+                      class="material-symbols-outlined icon-fill text-[28px] text-on-primary-container"
+                      >directions_car</span
+                    >
+                    <span
+                      class="font-display font-bold text-[22px] sm:text-[24px] uppercase tracking-tight leading-none text-on-primary-container"
+                    >
+                      MACCHINA GIALLA!
+                    </span>
+                  </div>
+                  <span
+                    class="font-display font-bold text-[10px] uppercase tracking-widest text-on-primary-container/80 mt-1 z-10"
+                  >
+                    TOCCA PER SEGNARE (+1 PT)
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Safety & Rule Footnote -->
+            <div class="flex items-center justify-center gap-1.5 mt-2 mb-1">
+              <span
+                class="material-symbols-outlined text-[13px] text-primary-container"
+                >verified_user</span
+              >
+              <span
+                class="font-display font-bold text-[10px] uppercase tracking-wider text-on-surface-variant"
+              >
+                Solo passeggeri • Falso spot = -1 pt &amp; 60s stop
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- VIEW 5: WINNER / PODIUM SUMMARY VIEW                                -->
+      <!-- =================================================================== -->
+      <div
+        id="view-winner"
+        class="hidden flex-1 flex-col min-h-screen view-enter bg-surface"
+      >
+        <header
+          class="sticky top-0 z-30 bg-surface/90 backdrop-blur-xl pt-safe border-b border-surface-container-high/60"
+        >
+          <div class="h-16 px-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <button
+                onclick="navigateTo('home')"
+                aria-label="Chiudi podio"
+                class="w-10 h-10 -ml-2 rounded-lg flex items-center justify-center text-on-surface hover:text-primary-container active:scale-95 transition-all"
+              >
+                <span class="material-symbols-outlined text-[24px]">close</span>
+              </button>
+              <div class="flex flex-col">
+                <span
+                  class="font-display font-bold text-[10px] uppercase tracking-widest text-primary-container leading-none"
+                  >Sessione Conclusa</span
+                >
+                <h1
+                  id="winner-room-title"
+                  class="font-display font-bold text-lg uppercase tracking-tight text-on-surface leading-tight"
+                >
+                  Milano Roadtrip
+                </h1>
+              </div>
+            </div>
+            <span
+              class="px-2.5 py-1 rounded-full bg-surface-container-high font-display font-bold text-[10px] uppercase tracking-wider text-on-surface-variant"
+              >RISULTATI UFFICIALI</span
+            >
+          </div>
+        </header>
+
+        <main class="flex-1 flex flex-col px-4 pt-4 pb-10 gap-4">
+          <!-- Victory Hero Banner -->
+          <div
+            class="relative overflow-hidden rounded-xl bg-surface-container-low p-4 border border-surface-container-high shadow-lg"
+          >
+            <div
+              class="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-primary-container/15 blur-2xl pointer-events-none"
+            ></div>
+            <div
+              class="absolute left-0 top-0 bottom-0 w-1.5 bg-primary-container"
+            ></div>
+
+            <div class="flex flex-col gap-1.5 pl-1.5">
+              <div class="flex items-center justify-between">
+                <span
+                  class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary-container text-on-primary-container font-display font-bold text-[10px] uppercase tracking-wider"
+                >
+                  <span class="material-symbols-outlined icon-fill text-[13px]"
+                    >military_tech</span
+                  >
+                  Bandiera a Scacchi
+                </span>
+                <span
+                  class="font-display font-bold text-[10px] uppercase tracking-wider text-on-surface-variant"
+                  >Rilevamento Chiuso</span
+                >
+              </div>
+              <h2
+                id="winner-headline"
+                class="font-display font-bold text-2xl uppercase text-primary-container tracking-tight leading-tight mt-1"
+              >
+                Marco V. è il Re della Strada!
+              </h2>
+              <p id="winner-subtext" class="text-xs text-on-surface-variant">
+                Sfida completata con 48 macchine gialle avvistate in totale
+              </p>
+            </div>
+          </div>
+
+          <!-- 3-Tier Elevated Podium -->
+          <section class="flex flex-col gap-2">
+            <div class="flex items-center justify-between px-1">
+              <span
+                class="font-display font-bold text-[11px] uppercase tracking-wider text-on-surface-variant"
+                >Podio della Corsa</span
+              >
+              <span
+                class="font-display font-bold text-[11px] uppercase tracking-wider text-primary-container"
+                >Classifica Verificata</span
+              >
+            </div>
+
+            <div
+              id="winner-podium-grid"
+              class="grid grid-cols-3 gap-2 items-end pt-5"
+            >
+              <!-- Populated dynamically from current leaderboard state -->
+            </div>
+
+            <!-- 4th Place Strip -->
+            <div
+              id="winner-fourth-strip"
+              class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low border border-surface-container-high/60"
+            >
+              <!-- Populated dynamically -->
+            </div>
+          </section>
+
+          <!-- Automated Telemetry Awards (Replacing Fake Ferrari Card) -->
+          <section class="flex flex-col gap-2">
+            <span
+              class="font-display font-bold text-[11px] uppercase tracking-wider text-on-surface-variant px-1"
+              >Premi Telemetria della Corsa</span
+            >
+            <div class="flex flex-col gap-2">
+              <!-- Award 1: Occhio di Falco -->
+              <div
+                class="flex items-center gap-3 p-3 rounded-xl bg-surface-container border border-surface-container-high"
+              >
+                <div
+                  class="w-10 h-10 rounded-lg bg-primary-container/15 text-primary-container flex items-center justify-center shrink-0"
+                >
+                  <span class="material-symbols-outlined icon-fill text-[22px]"
+                    >visibility</span
+                  >
+                </div>
+                <div class="flex flex-col min-w-0 flex-1">
+                  <div class="flex items-center justify-between">
+                    <span
+                      class="font-display font-bold text-xs uppercase text-primary-container"
+                      >Occhio di Falco</span
+                    >
+                    <span
+                      class="font-display font-bold text-[10px] px-1.5 py-0.5 rounded bg-surface-container-highest text-on-surface"
+                      >RIFLESSI TOP</span
+                    >
+                  </div>
+                  <span class="text-xs text-on-surface mt-0.5 truncate"
+                    ><strong>Tu (Matteo)</strong> • 2 avvistamenti in 45
+                    secondi</span
+                  >
+                </div>
+              </div>
+
+              <!-- Award 2: Cecchino 100% -->
+              <div
+                class="flex items-center gap-3 p-3 rounded-xl bg-surface-container border border-surface-container-high"
+              >
+                <div
+                  class="w-10 h-10 rounded-lg bg-secondary-container/50 text-secondary flex items-center justify-center shrink-0"
+                >
+                  <span class="material-symbols-outlined icon-fill text-[22px]"
+                    >verified</span
+                  >
+                </div>
+                <div class="flex flex-col min-w-0 flex-1">
+                  <div class="flex items-center justify-between">
+                    <span
+                      class="font-display font-bold text-xs uppercase text-secondary"
+                      >Cecchino 100%</span
+                    >
+                    <span
+                      class="font-display font-bold text-[10px] px-1.5 py-0.5 rounded bg-surface-container-highest text-on-surface-variant"
+                      >ZERO ERRORI</span
+                    >
+                  </div>
+                  <span class="text-xs text-on-surface mt-0.5 truncate"
+                    ><strong>Giulia B.</strong> • Nessuna contestazione
+                    subita</span
+                  >
+                </div>
+              </div>
+
+              <!-- Award 3: MVP del Tramonto -->
+              <div
+                class="flex items-center gap-3 p-3 rounded-xl bg-surface-container border border-surface-container-high"
+              >
+                <div
+                  class="w-10 h-10 rounded-lg bg-primary-container/15 text-primary-container flex items-center justify-center shrink-0"
+                >
+                  <span class="material-symbols-outlined icon-fill text-[22px]"
+                    >bolt</span
+                  >
+                </div>
+                <div class="flex flex-col min-w-0 flex-1">
+                  <div class="flex items-center justify-between">
+                    <span
+                      class="font-display font-bold text-xs uppercase text-primary-container"
+                      >MVP del Tramonto</span
+                    >
+                    <span
+                      class="font-display font-bold text-[10px] px-1.5 py-0.5 rounded bg-surface-container-highest text-on-surface"
+                      >STREAK x4</span
+                    >
+                  </div>
+                  <span class="text-xs text-on-surface mt-0.5 truncate"
+                    ><strong id="award-mvp-name">Marco V.</strong> • 4 auto in
+                    15 minuti sull'A4</span
+                  >
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Session Stats Bento -->
+          <div class="grid grid-cols-3 gap-2">
+            <div
+              class="rounded-xl bg-surface-container-low p-3 border border-surface-container-high/60"
+            >
+              <span
+                class="font-display font-bold text-[10px] uppercase text-on-surface-variant block"
+                >Totale Auto</span
+              >
+              <span
+                id="winner-total-cars"
+                class="font-display font-bold text-2xl text-primary-container block mt-0.5"
+                >48</span
+              >
+              <span class="text-[10px] text-secondary">Record gruppo</span>
+            </div>
+            <div
+              class="rounded-xl bg-surface-container-low p-3 border border-surface-container-high/60"
+            >
+              <span
+                class="font-display font-bold text-[10px] uppercase text-on-surface-variant block"
+                >Ora di Punta</span
+              >
+              <span
+                class="font-display font-bold text-xl text-on-surface block mt-0.5"
+                >16:42</span
+              >
+              <span class="text-[10px] text-on-surface-variant"
+                >Autostrada A1</span
+              >
+            </div>
+            <div
+              class="rounded-xl bg-surface-container-low p-3 border border-surface-container-high/60"
+            >
+              <span
+                class="font-display font-bold text-[10px] uppercase text-on-surface-variant block"
+                >Precisione</span
+              >
+              <span
+                class="font-display font-bold text-2xl text-on-surface block mt-0.5"
+                >98%</span
+              >
+              <span class="text-[10px] text-error">1 falso spot</span>
+            </div>
+          </div>
+
+          <!-- Winner CTAs -->
+          <div class="flex flex-col gap-2.5 pt-2">
+            <button
+              id="btn-share-podium"
+              type="button"
+              class="btn-taxi w-full py-4 px-4 rounded-xl bg-primary-container text-on-primary-container font-display font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span class="material-symbols-outlined icon-fill text-[20px]"
+                >share</span
+              >
+              <span>Condividi Podio Vittoria</span>
+            </button>
+            <button
+              onclick="navigateTo('home')"
+              type="button"
+              class="w-full py-3.5 px-4 rounded-xl bg-surface-container-high hover:bg-surface-bright text-on-surface font-display font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 active:scale-[0.99] transition-all"
+            >
+              <span class="material-symbols-outlined text-[18px]"
+                >dashboard</span
+              >
+              <span>Torna alla Dashboard</span>
+            </button>
+          </div>
+        </main>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- STREAMLINED 3-TAB BOTTOM NAVIGATION (Visible on Home/History/Prof)  -->
+      <!-- =================================================================== -->
+      <nav
+        id="bottom-nav"
+        class="fixed bottom-0 inset-x-0 z-30 flex justify-center pointer-events-none"
+      >
+        <div
+          class="w-full max-w-[430px] pb-safe bg-surface-container-lowest/95 backdrop-blur-xl border-t border-surface-container-high shadow-[0_-4px_20px_rgba(0,0,0,0.6)] pointer-events-auto"
+        >
+          <div class="flex justify-around items-center h-16 px-4">
+            <button
+              onclick="switchTab('home')"
+              data-tab="home"
+              class="nav-tab flex flex-col items-center justify-center gap-1 min-w-[68px] min-h-[44px] text-primary-container transition-colors active:scale-95"
+            >
+              <span class="material-symbols-outlined icon-fill text-[24px]"
+                >speed</span
+              >
+              <span
+                class="font-display font-bold text-[10px] uppercase tracking-wider"
+                >Gioca</span
+              >
+            </button>
+
+            <button
+              onclick="switchTab('history')"
+              data-tab="history"
+              class="nav-tab flex flex-col items-center justify-center gap-1 min-w-[68px] min-h-[44px] text-on-surface-variant hover:text-on-surface transition-colors active:scale-95"
+            >
+              <span class="material-symbols-outlined text-[24px]"
+                >emoji_events</span
+              >
+              <span
+                class="font-display font-bold text-[10px] uppercase tracking-wider"
+                >Storico</span
+              >
+            </button>
+
+            <button
+              onclick="switchTab('profile')"
+              data-tab="profile"
+              class="nav-tab flex flex-col items-center justify-center gap-1 min-w-[68px] min-h-[44px] text-on-surface-variant hover:text-on-surface transition-colors active:scale-95"
+            >
+              <span class="material-symbols-outlined text-[24px]"
+                >account_circle</span
+              >
+              <span
+                class="font-display font-bold text-[10px] uppercase tracking-wider"
+                >Profilo</span
+              >
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <!-- =================================================================== -->
+      <!-- MODAL 1: CREATE ROOM BOTTOM SHEET (Progressive Disclosure)          -->
+      <!-- =================================================================== -->
+      <div
+        id="modal-create-room"
+        class="hidden fixed inset-0 z-50 flex justify-center items-end bg-black/80 backdrop-blur-md"
+      >
+        <div
+          class="animate-sheet w-full max-w-[430px] rounded-t-2xl bg-surface-container-low border-t border-surface-container-high px-4 pt-2.5 pb-safe shadow-2xl flex flex-col max-h-[90dvh]"
+        >
+          <!-- Grab Handle & Modal Title -->
+          <div class="flex flex-col items-center mb-3">
+            <div class="w-10 h-1 rounded-full bg-surface-bright mb-2.5"></div>
+            <div class="w-full flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span
+                  class="material-symbols-outlined icon-fill text-primary-container text-[22px]"
+                  >sports_score</span
+                >
+                <h2
+                  class="font-display font-bold text-xl uppercase tracking-tight text-on-surface"
+                >
+                  Nuova Stanza
+                </h2>
+              </div>
+              <button
+                id="btn-close-create"
+                type="button"
+                aria-label="Chiudi"
+                class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-90 transition-all"
+              >
+                <span class="material-symbols-outlined text-[18px]">close</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Compact Scrollable Form -->
+          <div class="flex flex-col gap-3.5 overflow-y-auto pr-0.5 pb-2">
+            <!-- 1. Nome Stanza + Dice Randomizer -->
+            <div
+              class="p-3.5 rounded-xl bg-surface-container border border-surface-container-high/70 flex flex-col gap-2"
+            >
+              <label
+                for="input-room-name"
+                class="font-display font-bold text-xs uppercase tracking-wider text-on-surface flex items-center gap-1.5"
+              >
+                <span
+                  class="material-symbols-outlined text-primary-container text-[17px]"
+                  >flag</span
+                >
+                <span>Nome Stanza</span>
+              </label>
+              <div
+                class="flex items-center gap-1.5 bg-surface-container-lowest rounded-lg p-1 border border-surface-container-high focus-within:border-primary-container transition-colors"
+              >
+                <input
+                  id="input-room-name"
+                  type="text"
+                  value="Weekend a Roma 🚗"
+                  placeholder="Es. Gita in Costiera, Daily Commute..."
+                  class="flex-1 min-w-0 bg-transparent py-1.5 px-2.5 text-sm font-bold text-on-surface focus:outline-none placeholder:text-outline"
+                />
+                <button
+                  id="btn-dice-name"
+                  type="button"
+                  title="Genera nome casuale"
+                  class="w-9 h-9 rounded-lg bg-surface-container-high text-primary-container hover:bg-surface-bright active:rotate-180 transition-all flex items-center justify-center shrink-0"
+                >
+                  <span class="material-symbols-outlined text-[19px]"
+                    >casino</span
+                  >
+                </button>
+              </div>
+            </div>
+
+            <!-- 2. Condizione di Vittoria (Dynamic Toggle) -->
+            <div
+              class="p-3.5 rounded-xl bg-surface-container border border-surface-container-high/70 flex flex-col gap-2.5"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="font-display font-bold text-xs uppercase tracking-wider text-on-surface flex items-center gap-1.5"
+                >
+                  <span
+                    class="material-symbols-outlined text-primary-container text-[17px]"
+                    >emoji_events</span
+                  >
+                  <span>Modalità di Vittoria</span>
+                </span>
+                <span
+                  id="mode-hint-label"
+                  class="font-display font-bold text-[10px] uppercase tracking-wider text-primary-container"
+                  >Sfida a Tempo</span
+                >
+              </div>
+
+              <!-- Segmented Switch: A Tempo vs A Obiettivo -->
+              <div
+                class="grid grid-cols-2 gap-1.5 p-1 rounded-lg bg-surface-container-lowest"
+              >
+                <button
+                  type="button"
+                  data-mode="time"
+                  class="win-mode-btn py-2 px-2 rounded-md font-display font-bold text-xs uppercase bg-surface-container-high text-primary-container shadow-sm flex items-center justify-center gap-1.5 transition-all"
+                >
+                  <span class="material-symbols-outlined text-[16px]"
+                    >schedule</span
+                  >
+                  <span>A Tempo</span>
+                </button>
+                <button
+                  type="button"
+                  data-mode="target"
+                  class="win-mode-btn py-2 px-2 rounded-md font-display font-bold text-xs uppercase text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5 transition-all"
+                >
+                  <span class="material-symbols-outlined text-[16px]"
+                    >flag_circle</span
+                  >
+                  <span>A Obiettivo</span>
+                </button>
+              </div>
+
+              <!-- Dynamic Sub-Options Grid (Swaps between Durations & Target Car Counts) -->
+              <div id="dynamic-suboptions-grid" class="grid grid-cols-2 gap-2">
+                <!-- Rendered via JS -->
+              </div>
+            </div>
+
+            <!-- 3. Regole Extra (Compact Single-Line Switches) -->
+            <div
+              class="p-3 rounded-xl bg-surface-container border border-surface-container-high/70 flex flex-col divide-y divide-surface-container-high"
+            >
+              <!-- Switch 1: Penalità Falso Allarme -->
+              <div class="flex items-center justify-between pb-2.5">
+                <div class="flex items-center gap-2.5 min-w-0 pr-2">
+                  <span
+                    class="material-symbols-outlined text-primary-container text-[19px] shrink-0"
+                    >gavel</span
+                  >
+                  <div class="min-w-0">
+                    <div
+                      class="font-display font-bold text-xs uppercase text-on-surface"
+                    >
+                      Penalità Falso Allarme
+                    </div>
+                    <div class="text-[11px] text-on-surface-variant truncate">
+                      -1 pt e 60s stop se il gruppo contesta
+                    </div>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  data-toggle="penalty"
+                  aria-pressed="true"
+                  class="rule-toggle w-11 h-6 rounded-full bg-primary-container flex items-center px-0.5 justify-end transition-colors shrink-0"
+                >
+                  <span
+                    class="w-5 h-5 rounded-full bg-on-primary-container shadow"
+                  ></span>
+                </button>
+              </div>
+
+              <!-- Switch 2: Promemoria Sicurezza -->
+              <div class="flex items-center justify-between pt-2.5">
+                <div class="flex items-center gap-2.5 min-w-0 pr-2">
+                  <span
+                    class="material-symbols-outlined text-primary-container text-[19px] shrink-0"
+                    >verified_user</span
+                  >
+                  <div class="min-w-0">
+                    <div
+                      class="font-display font-bold text-xs uppercase text-on-surface"
+                    >
+                      Solo Passeggeri
+                    </div>
+                    <div class="text-[11px] text-on-surface-variant truncate">
+                      Avviso sicurezza per chi è alla guida
+                    </div>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  data-toggle="safety"
+                  aria-pressed="true"
+                  class="rule-toggle w-11 h-6 rounded-full bg-primary-container flex items-center px-0.5 justify-end transition-colors shrink-0"
+                >
+                  <span
+                    class="w-5 h-5 rounded-full bg-on-primary-container shadow"
+                  ></span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Launch CTA -->
+          <div class="pt-3 pb-2">
+            <button
+              id="btn-confirm-create"
+              type="button"
+              class="btn-taxi w-full py-4 px-4 rounded-xl bg-primary-container text-on-primary-container font-display font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span class="material-symbols-outlined icon-fill text-[20px]"
+                >rocket_launch</span
+              >
+              <span>CREA STANZA &amp; GENERA PIN</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- MODAL 2: JOIN VIA 6-DIGIT PIN BOTTOM SHEET                          -->
+      <!-- =================================================================== -->
+      <div
+        id="modal-join-pin"
+        class="hidden fixed inset-0 z-50 flex justify-center items-end bg-black/80 backdrop-blur-md"
+      >
+        <div
+          class="animate-sheet w-full max-w-[430px] rounded-t-2xl bg-surface-container border-t border-surface-container-high p-5 pb-safe shadow-2xl flex flex-col gap-4"
+        >
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span
+                class="material-symbols-outlined icon-fill text-primary-container text-[22px]"
+                >key</span
+              >
+              <h2
+                class="font-display font-bold text-lg uppercase text-on-surface"
+              >
+                Entra con Codice PIN
+              </h2>
+            </div>
+            <button
+              id="btn-close-join"
+              type="button"
+              class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:text-on-surface"
+            >
+              <span class="material-symbols-outlined text-[18px]">close</span>
+            </button>
+          </div>
+
+          <p class="text-xs text-on-surface-variant">
+            Inserisci o incolla il codice a 6 caratteri condiviso dall'host
+            della stanza.
+          </p>
+
+          <!-- 6-Character PIN Boxes (Supports typing, backspace & paste) -->
+          <div id="pin-inputs-row" class="grid grid-cols-6 gap-2 my-1">
+            <input
+              maxlength="1"
+              type="text"
+              placeholder="M"
+              class="pin-box h-14 bg-surface-container-lowest border border-surface-container-high focus:border-primary-container rounded-lg text-center font-display font-bold text-xl text-primary-container uppercase focus:outline-none"
+            />
+            <input
+              maxlength="1"
+              type="text"
+              placeholder="I"
+              class="pin-box h-14 bg-surface-container-lowest border border-surface-container-high focus:border-primary-container rounded-lg text-center font-display font-bold text-xl text-primary-container uppercase focus:outline-none"
+            />
+            <input
+              maxlength="1"
+              type="text"
+              placeholder="L"
+              class="pin-box h-14 bg-surface-container-lowest border border-surface-container-high focus:border-primary-container rounded-lg text-center font-display font-bold text-xl text-primary-container uppercase focus:outline-none"
+            />
+            <input
+              maxlength="1"
+              type="text"
+              placeholder="8"
+              class="pin-box h-14 bg-surface-container-lowest border border-surface-container-high focus:border-primary-container rounded-lg text-center font-display font-bold text-xl text-primary-container uppercase focus:outline-none"
+            />
+            <input
+              maxlength="1"
+              type="text"
+              placeholder="8"
+              class="pin-box h-14 bg-surface-container-lowest border border-surface-container-high focus:border-primary-container rounded-lg text-center font-display font-bold text-xl text-primary-container uppercase focus:outline-none"
+            />
+            <input
+              maxlength="1"
+              type="text"
+              placeholder="2"
+              class="pin-box h-14 bg-surface-container-lowest border border-surface-container-high focus:border-primary-container rounded-lg text-center font-display font-bold text-xl text-primary-container uppercase focus:outline-none"
+            />
+          </div>
+
+          <div class="flex items-center justify-between">
+            <button
+              id="btn-fill-demo-pin"
+              type="button"
+              class="text-xs font-display font-bold uppercase text-primary-container hover:underline"
+            >
+              Usa codice demo #MIL882
+            </button>
+            <span class="text-[11px] text-outline">Incolla supportato</span>
+          </div>
+
+          <button
+            id="btn-submit-pin"
+            type="button"
+            class="btn-taxi w-full py-3.5 rounded-xl bg-primary-container text-on-primary-container font-display font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 mb-2"
+          >
+            <span>ENTRA NELLA CORSA</span>
+            <span class="material-symbols-outlined text-[18px]"
+              >arrow_forward</span
+            >
+          </button>
+        </div>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- MODAL 3: INSTAGRAM / WHATSAPP STORY SHARE PREVIEW                   -->
+      <!-- =================================================================== -->
+      <div
+        id="modal-share-story"
+        class="hidden fixed inset-0 z-50 flex justify-center items-center p-4 bg-black/85 backdrop-blur-md"
+      >
+        <div
+          class="w-full max-w-[340px] rounded-2xl bg-surface-container border border-surface-container-high p-4 flex flex-col gap-3.5 shadow-2xl"
+        >
+          <div class="flex items-center justify-between">
+            <span
+              class="font-display font-bold text-xs uppercase tracking-wider text-primary-container"
+              >Anteprima Story 9:16</span
+            >
+            <button
+              id="btn-close-share"
+              type="button"
+              class="w-7 h-7 rounded-lg bg-surface-container-high flex items-center justify-center text-on-surface-variant"
+            >
+              <span class="material-symbols-outlined text-[16px]">close</span>
+            </button>
+          </div>
+
+          <!-- Simulated 9:16 Social Scorecard -->
+          <div
+            class="rounded-xl bg-gradient-to-b from-[#1e1d18] to-[#0e0e0e] border border-primary-container/40 p-4 flex flex-col items-center text-center gap-2.5"
+          >
+            <span
+              class="px-2.5 py-0.5 rounded-full bg-primary-container text-on-primary-container font-display font-bold text-[10px] uppercase tracking-widest"
+              >MACCHINA GIALLA • RISULTATO</span
+            >
+            <h3
+              id="story-room-name"
+              class="font-display font-bold text-xl uppercase text-on-surface"
+            >
+              Milano Roadtrip
+            </h3>
+            <div
+              class="w-14 h-14 rounded-full bg-primary-container/20 border-2 border-primary-container flex items-center justify-center text-2xl my-1"
+            >
+              👑
+            </div>
+            <div>
+              <div
+                id="story-winner-name"
+                class="font-display font-bold text-lg text-primary-container uppercase"
+              >
+                Marco V.
+              </div>
+              <div
+                id="story-winner-score"
+                class="font-display font-bold text-3xl text-on-surface"
+              >
+                16 GIALLE
+              </div>
+            </div>
+            <div
+              class="w-full pt-2 mt-1 border-t border-surface-container-high flex justify-between text-[11px] text-on-surface-variant font-display uppercase"
+            >
+              <span>4 Giocatori</span>
+              <span id="story-total-spots">48 Totali</span>
+            </div>
+          </div>
+
+          <button
+            id="btn-copy-story-link"
+            type="button"
+            class="btn-taxi w-full py-3 rounded-xl bg-primary-container text-on-primary-container font-display font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5"
+          >
+            <span class="material-symbols-outlined text-[17px]"
+              >content_copy</span
+            >
+            <span>Copia Scorecard &amp; Link</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- GLOBAL FLOATING TOAST FEEDBACK                                      -->
+      <!-- =================================================================== -->
+      <div
+        id="global-toast"
+        class="fixed top-20 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-full bg-primary-container text-on-primary-container font-display font-bold text-xs uppercase tracking-wider shadow-2xl flex items-center gap-2 transition-all duration-300 opacity-0 pointer-events-none -translate-y-3 whitespace-nowrap"
+      >
+        <span
+          id="toast-icon"
+          class="material-symbols-outlined icon-fill text-[17px]"
+          >check_circle</span
+        >
+        <span id="toast-message">Azione completata!</span>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- APPLICATION STATE & INTERACTIVITY ENGINE                              -->
+    <!-- ===================================================================== -->
+    <script>
+      (function initMacchinaGiallaApp() {
+        // -------------------------------------------------------------------
+        // 1. CENTRALIZED APP STATE
+        // -------------------------------------------------------------------
+        const state = {
+          currentView: "home",
+          totalSpottedAllTime: 148,
+          activeRooms: [
+            {
+              id: "milano",
+              name: "Milano Roadtrip 🏎️",
+              pin: "#MIL-882",
+              tag: "Autostrada A1",
+              mode: "time",
+              modeDetail: "14h 22m rimasti • 42%",
+              progressPct: 42,
+              playersCount: 4,
+              lastSpotText: "Marco 2m fa",
+              highlighted: true,
+            },
+            {
+              id: "costiera",
+              name: "Costiera Amalfitana 🍋",
+              pin: "#CST-409",
+              tag: "Weekend Sprint",
+              mode: "target",
+              modeDetail: "Obiettivo: 20 Auto",
+              progressPct: 65,
+              playersCount: 6,
+              lastSpotText: "Giulia 12m fa",
+              highlighted: false,
+            },
+            {
+              id: "torino",
+              name: "Torino Commute Crew ⚡",
+              pin: "#TRN-115",
+              tag: "Daily League",
+              mode: "time",
+              modeDetail: "Fino a stasera 20:00",
+              progressPct: 78,
+              playersCount: 3,
+              lastSpotText: "Luca 45m fa",
+              highlighted: false,
+            },
+          ],
+          currentRoomId: "milano",
+          players: [
+            {
+              id: "marco",
+              name: "Marco V.",
+              initials: "MV",
+              score: 16,
+              streak: 3,
+              statusText: "In streak 🔥 x3",
+              isMe: false,
+              penalized: false,
+            },
+            {
+              id: "matteo",
+              name: "Tu (Matteo)",
+              initials: "ME",
+              score: 14,
+              streak: 1,
+              statusText: "-2 pt dal leader",
+              isMe: true,
+              penalized: false,
+            },
+            {
+              id: "giulia",
+              name: "Giulia B.",
+              initials: "GB",
+              score: 11,
+              streak: 0,
+              statusText: "Ultimo spot 12m fa",
+              isMe: false,
+              penalized: false,
+            },
+            {
+              id: "ale",
+              name: "Ale Rossi",
+              initials: "AR",
+              score: 7,
+              streak: 0,
+              statusText: "1 falso allarme (-1 pt)",
+              isMe: false,
+              penalized: true,
+            },
+          ],
+          feedEvents: [
+            {
+              id: "ev-1",
+              playerId: "marco",
+              playerName: "Marco V.",
+              text: "Marco V. ha avvistato una Gialla!",
+              time: "2m fa",
+              type: "spot",
+              disputable: true,
+              disputeVotes: 0,
+              disputeRequired: 2,
+              resolvedPenalty: false,
+            },
+            {
+              id: "ev-2",
+              playerId: "matteo",
+              playerName: "Tu (Matteo)",
+              text: "Matteo ha segnato +1 pt!",
+              time: "4m fa",
+              type: "me",
+              disputable: false,
+              disputeVotes: 0,
+              disputeRequired: 2,
+              resolvedPenalty: false,
+            },
+            {
+              id: "ev-3",
+              playerId: "ale",
+              playerName: "Ale Rossi",
+              text: "VAR: Falso allarme di Ale Rossi (-1 pt)",
+              time: "7m fa",
+              type: "penalty",
+              disputable: false,
+              disputeVotes: 2,
+              disputeRequired: 2,
+              resolvedPenalty: true,
+            },
+          ],
+          createModal: {
+            mode: "time", // 'time' | 'target'
+            selectedSubOption: "24h",
+            penaltyEnabled: true,
+            safetyEnabled: true,
+          },
+        };
+
+        // -------------------------------------------------------------------
+        // 2. TOAST NOTIFICATION HELPER (Never uses alert())
+        // -------------------------------------------------------------------
+        let toastTimeout = null;
+        function showToast(message, iconName = "check_circle") {
+          const toast = document.getElementById("global-toast");
+          const msgEl = document.getElementById("toast-message");
+          const iconEl = document.getElementById("toast-icon");
+          if (!toast || !msgEl) return;
+
+          msgEl.textContent = message;
+          if (iconEl) iconEl.textContent = iconName;
+
+          toast.classList.remove(
+            "opacity-0",
+            "pointer-events-none",
+            "-translate-y-3",
+          );
+          toast.classList.add("opacity-100", "translate-y-0");
+
+          if (toastTimeout) clearTimeout(toastTimeout);
+          toastTimeout = setTimeout(() => {
+            toast.classList.remove("opacity-100", "translate-y-0");
+            toast.classList.add(
+              "opacity-0",
+              "pointer-events-none",
+              "-translate-y-3",
+            );
+          }, 2500);
+        }
+
+        // -------------------------------------------------------------------
+        // 3. VIEW & NAVIGATION ROUTER
+        // -------------------------------------------------------------------
+        window.navigateTo = function (viewName) {
+          state.currentView = viewName;
+          const views = ["home", "history", "profile", "game", "winner"];
+          views.forEach((v) => {
+            const el = document.getElementById(`view-${v}`);
+            if (el) {
+              if (v === viewName) {
+                el.classList.remove("hidden");
+                el.classList.add("flex");
+              } else {
+                el.classList.add("hidden");
+                el.classList.remove("flex");
+              }
+            }
+          });
+
+          // Show bottom nav only on primary tabs
+          const bottomNav = document.getElementById("bottom-nav");
+          if (bottomNav) {
+            if (["home", "history", "profile"].includes(viewName)) {
+              bottomNav.classList.remove("hidden");
+            } else {
+              bottomNav.classList.add("hidden");
+            }
+          }
+
+          window.scrollTo({ top: 0, behavior: "instant" });
+
+          if (viewName === "home") {
+            renderHomeRooms();
+            updateHomeResumeBanner();
+          } else if (viewName === "game") {
+            renderGameRoom();
+          } else if (viewName === "winner") {
+            renderWinnerPodium();
+          }
+        };
+
+        window.switchTab = function (tabName) {
+          document.querySelectorAll(".nav-tab").forEach((btn) => {
+            const icon = btn.querySelector(".material-symbols-outlined");
+            if (btn.dataset.tab === tabName) {
+              btn.classList.remove("text-on-surface-variant");
+              btn.classList.add("text-primary-container");
+              if (icon) icon.classList.add("icon-fill");
+            } else {
+              btn.classList.add("text-on-surface-variant");
+              btn.classList.remove("text-primary-container");
+              if (icon) icon.classList.remove("icon-fill");
+            }
+          });
+          navigateTo(tabName);
+        };
+
+        // -------------------------------------------------------------------
+        // 4. HOME VIEW RENDERING
+        // -------------------------------------------------------------------
+        function getSortedPlayers() {
+          return [...state.players].sort((a, b) => b.score - a.score);
+        }
+
+        function updateHomeResumeBanner() {
+          const room =
+            state.activeRooms.find((r) => r.id === state.currentRoomId) ||
+            state.activeRooms[0];
+          const sorted = getSortedPlayers();
+          const meIndex = sorted.findIndex((p) => p.isMe);
+          const me = sorted[meIndex];
+          const leader = sorted[0];
+
+          const titleEl = document.getElementById("banner-room-title");
+          const subEl = document.getElementById("banner-room-subtitle");
+          if (titleEl) titleEl.textContent = room.name;
+          if (subEl && me) {
+            const rankStr = `${meIndex + 1}°`;
+            const diffText =
+              meIndex === 0
+                ? "Sei in testa alla corsa!"
+                : `-${leader.score - me.score} pt dal leader`;
+            subEl.textContent = `Sei ${rankStr} con ${me.score} pt • ${diffText}`;
+          }
+        }
+
+        function renderHomeRooms() {
+          const container = document.getElementById("rooms-list-container");
+          const countEl = document.getElementById("active-rooms-count");
+          if (!container) return;
+
+          if (countEl) countEl.textContent = `(${state.activeRooms.length})`;
+
+          const sorted = getSortedPlayers();
+          const meRank = sorted.findIndex((p) => p.isMe) + 1;
+          const meScore = sorted.find((p) => p.isMe)?.score || 14;
+
+          container.innerHTML = state.activeRooms
+            .map((room, idx) => {
+              const isPrimary = idx === 0;
+              const badgeText =
+                idx === 0
+                  ? `🥇 ${meRank}° POSTO`
+                  : idx === 1
+                    ? "🥈 2° POSTO"
+                    : "🥉 3° POSTO";
+              const ptsText =
+                idx === 0 ? `${meScore} PT` : idx === 1 ? "9 PT" : "5 PT";
+
+              return `
+              <article
+                onclick="openGameRoom('${room.id}')"
+                role="button"
+                tabindex="0"
+                class="btn-asphalt group relative flex flex-col p-4 rounded-xl bg-surface-container cursor-pointer overflow-hidden"
+              >
+                ${
+                  isPrimary
+                    ? '<div class="absolute inset-x-0 top-0 h-1 bg-primary-container rounded-t-xl"></div>'
+                    : ""
+                }
+                <div class="flex items-start justify-between gap-2">
+                  <div class="flex flex-col min-w-0">
+                    <span class="font-display font-bold text-[19px] text-on-surface truncate">
+                      ${room.name}
+                    </span>
+                    <div class="flex items-center gap-2 mt-1">
+                      <span class="px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface-variant font-display font-bold text-[10px] uppercase tracking-wider">
+                        ${room.tag}
+                      </span>
+                      <span class="flex items-center gap-1 font-display font-bold text-on-surface-variant text-[11px]">
+                        <span class="material-symbols-outlined text-[14px]">group</span>
+                        ${room.playersCount} Giocatori
+                      </span>
+                    </div>
+                  </div>
+                  <div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant group-hover:text-primary-container flex items-center justify-center transition-colors shrink-0">
+                    <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between mt-3.5 pt-2.5 bg-surface-container-low/80 rounded-lg px-2.5 py-2">
+                  <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 rounded ${
+                      isPrimary
+                        ? "bg-primary-container text-on-primary-container"
+                        : "bg-surface-container-highest text-on-surface"
+                    } font-display font-bold text-[10px]">
+                      ${badgeText}
+                    </span>
+                    <span class="font-display font-bold text-xs ${
+                      isPrimary ? "text-primary-container" : "text-on-surface"
+                    }">${ptsText}</span>
+                  </div>
+                  <div class="flex items-center gap-1 text-on-surface-variant text-xs">
+                    <span class="material-symbols-outlined text-[14px] text-primary-container">radar</span>
+                    <span>Ultimo: <strong class="text-on-surface">${
+                      room.lastSpotText
+                    }</strong></span>
+                  </div>
+                </div>
+              </article>
+            `;
+            })
+            .join("");
+        }
+
+        window.openGameRoom = function (roomId) {
+          state.currentRoomId = roomId;
+          navigateTo("game");
+        };
+
+        window.openWinnerScreen = function () {
+          navigateTo("winner");
+        };
+
+        // -------------------------------------------------------------------
+        // 5. LIVE GAME ROOM RENDERING & INTERACTIONS
+        // -------------------------------------------------------------------
+        function renderGameRoom() {
+          const room =
+            state.activeRooms.find((r) => r.id === state.currentRoomId) ||
+            state.activeRooms[0];
+
+          const titleEl = document.getElementById("game-room-title");
+          const pinEl = document.getElementById("game-room-pin");
+          const modeEl = document.getElementById("game-room-mode-badge");
+          const progLabel = document.getElementById("game-progress-label");
+          const progBar = document.getElementById("game-progress-bar");
+
+          if (titleEl)
+            titleEl.textContent = room.name.replace(/[^\w\sÀ-ÿ]/g, "").trim();
+          if (pinEl) pinEl.textContent = room.pin;
+          if (modeEl)
+            modeEl.textContent = `${room.playersCount} Giocatori • ${
+              room.mode === "target" ? "A Obiettivo" : "A Tempo"
+            }`;
+          if (progLabel) progLabel.textContent = room.modeDetail;
+          if (progBar) progBar.style.width = `${room.progressPct}%`;
+
+          renderLeaderboard();
+          renderTelemetryFeed();
+        }
+
+        function renderLeaderboard() {
+          const container = document.getElementById("game-leaderboard");
+          if (!container) return;
+
+          const sorted = getSortedPlayers();
+          const leaderScore = sorted[0]?.score || 0;
+
+          container.innerHTML = sorted
+            .map((p, index) => {
+              const rank = index + 1;
+              const isFirst = rank === 1;
+              const diff = leaderScore - p.score;
+
+              let dynamicSubtitle = p.statusText;
+              if (p.penalized) {
+                dynamicSubtitle = "In cooldown (42s) • -1 pt VAR";
+              } else if (isFirst) {
+                dynamicSubtitle = `Leader • Streak 🔥 x${Math.max(p.streak, 2)}`;
+              } else if (p.isMe) {
+                dynamicSubtitle =
+                  diff === 0
+                    ? "Pari merito con il 1°!"
+                    : `-${diff} pt dal leader`;
+              }
+
+              const rowBg = p.isMe
+                ? "bg-surface-container-highest border border-primary-container/50 shadow-md"
+                : "bg-surface-container-lowest";
+
+              const badgeHtml = isFirst
+                ? `<div class="relative w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-display font-bold text-xs shrink-0">
+                    <span class="material-symbols-outlined icon-fill text-[18px]">military_tech</span>
+                    <span class="absolute -top-1.5 -right-1 text-[11px]">👑</span>
+                   </div>`
+                : `<div class="w-8 h-8 rounded-full ${
+                    p.isMe
+                      ? "bg-secondary-container text-on-secondary-container"
+                      : "bg-surface-container-high text-on-surface-variant"
+                  } flex items-center justify-center font-display font-bold text-xs shrink-0">
+                    ${rank}°
+                   </div>`;
+
+              return `
+              <div class="flex items-center justify-between p-2.5 rounded-lg ${rowBg} transition-all">
+                <div class="flex items-center gap-2.5 min-w-0">
+                  ${badgeHtml}
+                  <div class="flex flex-col min-w-0">
+                    <div class="flex items-center gap-1.5">
+                      <span class="font-display font-bold text-sm text-on-surface truncate">${
+                        p.name
+                      }</span>
+                      ${
+                        p.penalized
+                          ? '<span class="px-1.5 py-0.2 rounded bg-error-container text-error font-display font-bold text-[9px] uppercase">-1 VAR</span>'
+                          : ""
+                      }
+                    </div>
+                    <span class="text-[11px] ${
+                      p.isMe
+                        ? "text-primary-container font-medium"
+                        : p.penalized
+                          ? "text-error"
+                          : "text-on-surface-variant"
+                    } truncate">
+                      ${dynamicSubtitle}
+                    </span>
+                  </div>
+                </div>
+
+                <div class="flex flex-col items-end shrink-0 pl-2">
+                  <span class="font-display font-bold text-xl leading-none ${
+                    isFirst || p.isMe
+                      ? "text-primary-container"
+                      : "text-on-surface"
+                  }">${p.score}</span>
+                  <span class="font-display font-bold text-[9px] uppercase tracking-widest text-on-surface-variant mt-0.5">PT</span>
+                </div>
+              </div>
+            `;
+            })
+            .join("");
+        }
+
+        function renderTelemetryFeed() {
+          const feedEl = document.getElementById("game-telemetry-feed");
+          if (!feedEl) return;
+
+          feedEl.innerHTML = state.feedEvents
+            .slice(0, 4)
+            .map((ev) => {
+              const icon =
+                ev.type === "penalty" ? "⚠️" : ev.type === "me" ? "🔥" : "⚡";
+              const textColor =
+                ev.type === "penalty"
+                  ? "text-error"
+                  : ev.type === "me"
+                    ? "text-primary-container font-semibold"
+                    : "text-on-surface";
+
+              const disputeBtnHtml = ev.disputable
+                ? `<button
+                    onclick="disputeEvent('${ev.id}')"
+                    type="button"
+                    class="ml-auto shrink-0 px-2 py-1 rounded bg-surface-container-high hover:bg-error-container/70 text-on-surface-variant hover:text-error font-display font-bold text-[10px] uppercase tracking-wide flex items-center gap-1 active:scale-95 transition-all"
+                  >
+                    <span>🚩 Contesta (${ev.disputeVotes}/${ev.disputeRequired})</span>
+                  </button>`
+                : `<span class="ml-auto font-display font-bold text-[10px] text-on-surface-variant shrink-0">${ev.time}</span>`;
+
+              return `
+              <div class="flex items-center gap-2 text-xs py-1 border-b border-surface-container-high/40 last:border-b-0">
+                <span class="shrink-0">${icon}</span>
+                <span class="${textColor} truncate">${ev.text}</span>
+                ${disputeBtnHtml}
+              </div>
+            `;
+            })
+            .join("");
+        }
+
+        // Dispute / VAR Vote Handler
+        window.disputeEvent = function (eventId) {
+          const ev = state.feedEvents.find((e) => e.id === eventId);
+          if (!ev || !ev.disputable) return;
+
+          ev.disputeVotes += 1;
+          if (ev.disputeVotes >= ev.disputeRequired) {
+            ev.disputable = false;
+            ev.resolvedPenalty = true;
+            ev.type = "penalty";
+            ev.text = `VAR Confermato: -1 pt a ${ev.playerName}!`;
+
+            const targetPlayer = state.players.find(
+              (p) => p.id === ev.playerId,
+            );
+            if (targetPlayer) {
+              targetPlayer.score = Math.max(0, targetPlayer.score - 1);
+              targetPlayer.penalized = true;
+              targetPlayer.streak = 0;
+            }
+
+            showToast(
+              `Falso allarme confermato! -1 pt a ${ev.playerName}`,
+              "gavel",
+            );
+            renderLeaderboard();
+          } else {
+            showToast(
+              `Contestazione inviata (${ev.disputeVotes}/${ev.disputeRequired} voti)`,
+              "flag",
+            );
+          }
+          renderTelemetryFeed();
+        };
+
+        // Hero "MACCHINA GIALLA!" Spot Button Handler
+        const spotBtn = document.getElementById("btn-spot-yellow");
+        const particleSlot = document.getElementById("spot-particle-slot");
+
+        if (spotBtn) {
+          spotBtn.addEventListener("click", () => {
+            const me = state.players.find((p) => p.isMe);
+            if (me) {
+              me.score += 1;
+              me.streak += 1;
+              me.penalized = false;
+            }
+            state.totalSpottedAllTime += 1;
+
+            // Update global stats
+            const statHome = document.getElementById("stat-total-spotted");
+            const statProf = document.getElementById("profile-total-spots");
+            if (statHome) statHome.textContent = state.totalSpottedAllTime;
+            if (statProf) statProf.textContent = state.totalSpottedAllTime;
+
+            // Update current room metadata
+            const room = state.activeRooms.find(
+              (r) => r.id === state.currentRoomId,
+            );
+            if (room) {
+              room.lastSpotText = "Tu adesso";
+              room.progressPct = Math.min(100, room.progressPct + 4);
+              const progBar = document.getElementById("game-progress-bar");
+              if (progBar) progBar.style.width = `${room.progressPct}%`;
+            }
+
+            // Add live feed entry
+            state.feedEvents.unshift({
+              id: `ev-${Date.now()}`,
+              playerId: "matteo",
+              playerName: "Tu (Matteo)",
+              text: `Tu (Matteo) hai avvistato una Gialla! (${me.score} pt)`,
+              time: "adesso",
+              type: "me",
+              disputable: false,
+              disputeVotes: 0,
+              disputeRequired: 2,
+              resolvedPenalty: false,
+            });
+
+            // Spawn floating "+1 GIALLA!" particle
+            if (particleSlot) {
+              const badge = document.createElement("div");
+              badge.className =
+                "animate-spot-badge absolute -top-8 px-3.5 py-1 rounded-full bg-primary-container text-on-primary-container font-display font-bold text-xs uppercase shadow-xl border border-white/40";
+              badge.textContent = "+1 MACCHINA GIALLA! 🚕";
+              particleSlot.appendChild(badge);
+              setTimeout(() => badge.remove(), 900);
+            }
+
+            if (navigator.vibrate) navigator.vibrate(35);
+
+            renderLeaderboard();
+            renderTelemetryFeed();
+          });
+        }
+
+        // Copy Room PIN Button
+        const copyPinBtn = document.getElementById("btn-copy-pin");
+        if (copyPinBtn) {
+          copyPinBtn.addEventListener("click", () => {
+            const pinText =
+              document.getElementById("game-room-pin")?.textContent ||
+              "#MIL-882";
+            copyTextSafe(pinText);
+            showToast(`Codice ${pinText} copiato!`, "content_copy");
+          });
+        }
+
+        // Safe Clipboard Copy (Works inside iframes)
+        function copyTextSafe(text) {
+          const tempInput = document.createElement("textarea");
+          tempInput.value = text;
+          document.body.appendChild(tempInput);
+          tempInput.select();
+          try {
+            document.execCommand("copy");
+          } catch (err) {
+            // Fallback silent
+          }
+          document.body.removeChild(tempInput);
+        }
+
+        // -------------------------------------------------------------------
+        // 6. CREATE ROOM BOTTOM SHEET LOGIC (Progressive Disclosure)
+        // -------------------------------------------------------------------
+        const modalCreate = document.getElementById("modal-create-room");
+        const btnOpenCreate = document.getElementById("btn-open-create");
+        const btnCloseCreate = document.getElementById("btn-close-create");
+        const btnDiceName = document.getElementById("btn-dice-name");
+        const inputRoomName = document.getElementById("input-room-name");
+        const subOptionsGrid = document.getElementById(
+          "dynamic-suboptions-grid",
+        );
+        const modeHintLabel = document.getElementById("mode-hint-label");
+
+        const subOptionsConfig = {
+          time: [
+            {
+              id: "today",
+              title: "Fino a Stasera",
+              badge: "23:59",
+              desc: "Stop automatico a mezzanotte",
+            },
+            {
+              id: "24h",
+              title: "Tutto il Giorno",
+              badge: "24H",
+              desc: "Sfida libera di 24 ore",
+            },
+            {
+              id: "48h",
+              title: "Weekend Trip",
+              badge: "48H",
+              desc: "Perfetto per gite fuori porta",
+            },
+            {
+              id: "inf",
+              title: "Senza Limite",
+              badge: "∞",
+              desc: "Chiusura manuale dall'host",
+            },
+          ],
+          target: [
+            {
+              id: "10",
+              title: "10 Auto Gialle",
+              badge: "SPRINT",
+              desc: "Partita lampo in città",
+            },
+            {
+              id: "20",
+              title: "20 Auto Gialle",
+              badge: "TOP",
+              desc: "Il classico formato roadtrip",
+            },
+            {
+              id: "30",
+              title: "30 Auto Gialle",
+              badge: "PRO",
+              desc: "Viaggio lungo in autostrada",
+            },
+            {
+              id: "50",
+              title: "50 Auto Gialle",
+              badge: "MARATONA",
+              desc: "Solo per veri esperti",
+            },
+          ],
+        };
+
+        function renderCreateSubOptions() {
+          if (!subOptionsGrid) return;
+          const mode = state.createModal.mode;
+          const list = subOptionsConfig[mode];
+
+          if (modeHintLabel) {
+            modeHintLabel.textContent =
+              mode === "time"
+                ? "Vince chi ne vede di più"
+                : "Primo al traguardo";
+          }
+
+          subOptionsGrid.innerHTML = list
+            .map((item) => {
+              const isSelected =
+                state.createModal.selectedSubOption === item.id;
+              return `
+              <button
+                type="button"
+                onclick="selectSubOption('${item.id}')"
+                class="p-2.5 rounded-lg text-left flex flex-col justify-between transition-all ${
+                  isSelected
+                    ? "bg-surface-container-high border-2 border-primary-container"
+                    : "bg-surface-container-lowest border-2 border-transparent hover:bg-surface-container-high"
+                }"
+              >
+                <div class="flex items-center justify-between w-full gap-1">
+                  <span class="font-display font-bold text-xs ${
+                    isSelected ? "text-primary-container" : "text-on-surface"
+                  } truncate">${item.title}</span>
+                  <span class="font-display font-bold text-[9px] px-1.5 py-0.5 rounded ${
+                    isSelected
+                      ? "bg-primary-container text-on-primary-container"
+                      : "bg-surface-container-high text-on-surface-variant"
+                  }">${item.badge}</span>
+                </div>
+                <span class="text-[10px] text-on-surface-variant mt-1 leading-tight">${
+                  item.desc
+                }</span>
+              </button>
+            `;
+            })
+            .join("");
+        }
+
+        window.selectSubOption = function (id) {
+          state.createModal.selectedSubOption = id;
+          renderCreateSubOptions();
+        };
+
+        // Win Mode Segmented Buttons
+        document.querySelectorAll(".win-mode-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const newMode = btn.dataset.mode;
+            state.createModal.mode = newMode;
+            state.createModal.selectedSubOption =
+              newMode === "time" ? "24h" : "20";
+
+            document.querySelectorAll(".win-mode-btn").forEach((b) => {
+              if (b.dataset.mode === newMode) {
+                b.classList.add(
+                  "bg-surface-container-high",
+                  "text-primary-container",
+                  "shadow-sm",
+                );
+                b.classList.remove("text-on-surface-variant");
+              } else {
+                b.classList.remove(
+                  "bg-surface-container-high",
+                  "text-primary-container",
+                  "shadow-sm",
+                );
+                b.classList.add("text-on-surface-variant");
+              }
+            });
+
+            renderCreateSubOptions();
+          });
+        });
+
+        // Rule Switches
+        document.querySelectorAll(".rule-toggle").forEach((toggle) => {
+          toggle.addEventListener("click", () => {
+            const isOn = toggle.getAttribute("aria-pressed") === "true";
+            const knob = toggle.querySelector("span");
+            if (isOn) {
+              toggle.setAttribute("aria-pressed", "false");
+              toggle.classList.remove("bg-primary-container", "justify-end");
+              toggle.classList.add(
+                "bg-surface-container-highest",
+                "justify-start",
+              );
+              if (knob) {
+                knob.classList.remove("bg-on-primary-container");
+                knob.classList.add("bg-outline");
+              }
+            } else {
+              toggle.setAttribute("aria-pressed", "true");
+              toggle.classList.add("bg-primary-container", "justify-end");
+              toggle.classList.remove(
+                "bg-surface-container-highest",
+                "justify-start",
+              );
+              if (knob) {
+                knob.classList.add("bg-on-primary-container");
+                knob.classList.remove("bg-outline");
+              }
+            }
+          });
+        });
+
+        // Dice Randomizer
+        const funItalianRoomNames = [
+          "Autostrada del Sole Sprint ☀️",
+          "Tangenziale Est Rally 🏎️",
+          "Gita al Lago di Como 🚤",
+          "Passo dello Stelvio Drift 🏔️",
+          "Costiera Amalfitana Tour 🍋",
+          "A1 Modena Highspeed 🏁",
+        ];
+        if (btnDiceName && inputRoomName) {
+          btnDiceName.addEventListener("click", () => {
+            const pick =
+              funItalianRoomNames[
+                Math.floor(Math.random() * funItalianRoomNames.length)
+              ];
+            inputRoomName.value = pick;
+          });
+        }
+
+        if (btnOpenCreate && modalCreate) {
+          btnOpenCreate.addEventListener("click", () => {
+            renderCreateSubOptions();
+            modalCreate.classList.remove("hidden");
+            modalCreate.classList.add("flex");
+          });
+        }
+        if (btnCloseCreate && modalCreate) {
+          btnCloseCreate.addEventListener("click", () => {
+            modalCreate.classList.add("hidden");
+            modalCreate.classList.remove("flex");
+          });
+        }
+
+        // Confirm Create Room -> Generates Live Room & Transitions to Game Room
+        const btnConfirmCreate = document.getElementById("btn-confirm-create");
+        if (btnConfirmCreate) {
+          btnConfirmCreate.addEventListener("click", () => {
+            const rawName = inputRoomName?.value.trim() || "Nuova Corsa 🚗";
+            const randomDigits = Math.floor(100 + Math.random() * 900);
+            const newPin = `#GIA-${randomDigits}`;
+            const newId = `room-${Date.now()}`;
+
+            const isTarget = state.createModal.mode === "target";
+            const modeDetail = isTarget
+              ? `Obiettivo: ${state.createModal.selectedSubOption} Auto`
+              : `Durata: ${state.createModal.selectedSubOption.toUpperCase()} • Live`;
+
+            state.activeRooms.unshift({
+              id: newId,
+              name: rawName,
+              pin: newPin,
+              tag: isTarget ? "Corsa a Obiettivo" : "Sessione Live",
+              mode: state.createModal.mode,
+              modeDetail,
+              progressPct: 10,
+              playersCount: 4,
+              lastSpotText: "Appena creata",
+              highlighted: true,
+            });
+
+            modalCreate.classList.add("hidden");
+            modalCreate.classList.remove("flex");
+
+            showToast(`Stanza creata! PIN ${newPin}`, "rocket_launch");
+            openGameRoom(newId);
+          });
+        }
+
+        // -------------------------------------------------------------------
+        // 7. JOIN VIA PIN BOTTOM SHEET LOGIC (Auto-Advance & Paste)
+        // -------------------------------------------------------------------
+        const modalJoin = document.getElementById("modal-join-pin");
+        const btnOpenJoin = document.getElementById("btn-open-join");
+        const btnCloseJoin = document.getElementById("btn-close-join");
+        const pinInputs = document.querySelectorAll(".pin-box");
+
+        if (btnOpenJoin && modalJoin) {
+          btnOpenJoin.addEventListener("click", () => {
+            modalJoin.classList.remove("hidden");
+            modalJoin.classList.add("flex");
+            if (pinInputs[0]) pinInputs[0].focus();
+          });
+        }
+        if (btnCloseJoin && modalJoin) {
+          btnCloseJoin.addEventListener("click", () => {
+            modalJoin.classList.add("hidden");
+            modalJoin.classList.remove("flex");
+          });
+        }
+
+        pinInputs.forEach((box, idx) => {
+          box.addEventListener("input", (e) => {
+            const val = e.target.value
+              .replace(/[^a-zA-Z0-9]/g, "")
+              .toUpperCase();
+            e.target.value = val.slice(0, 1);
+            if (val && idx < pinInputs.length - 1) {
+              pinInputs[idx + 1].focus();
+            }
+          });
+
+          box.addEventListener("keydown", (e) => {
+            if (e.key === "Backspace" && !e.target.value && idx > 0) {
+              pinInputs[idx - 1].focus();
+            }
+          });
+
+          // Paste full 6-char code support
+          box.addEventListener("paste", (e) => {
+            e.preventDefault();
+            const pasted = (e.clipboardData || window.clipboardData)
+              .getData("text")
+              .replace(/[^a-zA-Z0-9]/g, "")
+              .toUpperCase()
+              .slice(0, 6);
+            pasted.split("").forEach((char, i) => {
+              if (pinInputs[i]) pinInputs[i].value = char;
+            });
+            const focusIdx = Math.min(pasted.length, pinInputs.length - 1);
+            if (pinInputs[focusIdx]) pinInputs[focusIdx].focus();
+          });
+        });
+
+        const btnFillDemo = document.getElementById("btn-fill-demo-pin");
+        if (btnFillDemo) {
+          btnFillDemo.addEventListener("click", () => {
+            "MIL882".split("").forEach((ch, i) => {
+              if (pinInputs[i]) pinInputs[i].value = ch;
+            });
+          });
+        }
+
+        const btnSubmitPin = document.getElementById("btn-submit-pin");
+        if (btnSubmitPin) {
+          btnSubmitPin.addEventListener("click", () => {
+            const code = Array.from(pinInputs)
+              .map((i) => i.value)
+              .join("");
+            if (code.length < 3) {
+              showToast("Inserisci il codice PIN della stanza", "key");
+              return;
+            }
+            modalJoin.classList.add("hidden");
+            modalJoin.classList.remove("flex");
+            showToast(`Connesso alla stanza #${code}!`, "check_circle");
+            openGameRoom("milano");
+          });
+        }
+
+        // -------------------------------------------------------------------
+        // 8. WINNER PODIUM RENDERING & STORY SHARE MODAL
+        // -------------------------------------------------------------------
+        function renderWinnerPodium() {
+          const room =
+            state.activeRooms.find((r) => r.id === state.currentRoomId) ||
+            state.activeRooms[0];
+          const sorted = getSortedPlayers();
+          const first = sorted[0];
+          const second = sorted[1];
+          const third = sorted[2];
+          const fourth = sorted[3];
+
+          const totalCars = sorted.reduce((acc, p) => acc + p.score, 0);
+
+          const titleEl = document.getElementById("winner-room-title");
+          const headlineEl = document.getElementById("winner-headline");
+          const subtextEl = document.getElementById("winner-subtext");
+          const totalCarsEl = document.getElementById("winner-total-cars");
+          const mvpAwardEl = document.getElementById("award-mvp-name");
+          const histWinnerEl = document.getElementById("history-winner-name");
+
+          if (titleEl)
+            titleEl.textContent = room.name.replace(/[^\w\sÀ-ÿ]/g, "").trim();
+          if (headlineEl && first)
+            headlineEl.textContent = `${first.name} è il Re della Strada!`;
+          if (subtextEl)
+            subtextEl.textContent = `Sfida completata con ${totalCars} macchine gialle avvistate in totale`;
+          if (totalCarsEl) totalCarsEl.textContent = totalCars;
+          if (mvpAwardEl && first) mvpAwardEl.textContent = first.name;
+          if (histWinnerEl && first) histWinnerEl.textContent = first.name;
+
+          const podiumGrid = document.getElementById("winner-podium-grid");
+          if (podiumGrid && first && second && third) {
+            podiumGrid.innerHTML = `
+              <!-- 2nd Place (Left) -->
+              <div class="flex flex-col items-center">
+                <div class="relative mb-2">
+                  <div class="w-12 h-12 rounded-full bg-secondary-container border-2 border-secondary flex items-center justify-center font-display font-bold text-sm text-on-secondary-container shadow-md">
+                    ${second.initials}
+                  </div>
+                  <span class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-secondary text-on-primary-container font-display font-bold text-[11px] flex items-center justify-center shadow">2</span>
+                </div>
+                <div class="w-full bg-surface-container-high rounded-t-xl pt-2.5 pb-3 px-1.5 flex flex-col items-center text-center shadow-md">
+                  <span class="font-display font-bold text-xs uppercase text-on-surface truncate w-full">${second.name}</span>
+                  <div class="font-display font-bold text-2xl text-secondary my-0.5">${second.score}</div>
+                  <span class="font-display font-bold text-[9px] uppercase text-on-surface-variant">Gialle</span>
+                  <div class="mt-2 w-full py-1 rounded bg-surface-container-highest text-secondary text-[10px] font-display font-bold uppercase">+90 XP</div>
+                </div>
+              </div>
+
+              <!-- 1st Place (Center Elevated Champion) -->
+              <div class="flex flex-col items-center -mt-4 z-10">
+                <div class="relative mb-2">
+                  <div class="absolute -top-4 left-1/2 -translate-x-1/2 text-primary-container animate-bounce">
+                    <span class="material-symbols-outlined icon-fill text-[24px]">crown</span>
+                  </div>
+                  <div class="w-16 h-16 rounded-full bg-primary-container border-2 border-white/60 flex items-center justify-center font-display font-bold text-lg text-on-primary-container shadow-xl">
+                    ${first.initials}
+                  </div>
+                  <span class="absolute -bottom-1 right-0 w-6 h-6 rounded-full bg-primary-container text-on-primary-container font-display font-bold text-xs flex items-center justify-center border-2 border-surface shadow">1</span>
+                </div>
+                <div class="w-full bg-surface-container-highest rounded-t-xl pt-3 pb-4 px-2 flex flex-col items-center text-center shadow-xl relative overflow-hidden border-t-2 border-primary-container">
+                  <span class="font-display font-bold text-sm uppercase text-primary-container truncate w-full">${first.name}</span>
+                  <div class="font-display font-bold text-3xl text-on-surface my-0.5">${first.score}</div>
+                  <span class="font-display font-bold text-[10px] uppercase text-on-surface-variant">Gialle Spot</span>
+                  <div class="mt-2 w-full py-1 rounded bg-primary-container text-on-primary-container text-[10px] font-display font-bold uppercase tracking-wider">+150 XP • MVP</div>
+                </div>
+              </div>
+
+              <!-- 3rd Place (Right) -->
+              <div class="flex flex-col items-center">
+                <div class="relative mb-2">
+                  <div class="w-12 h-12 rounded-full bg-surface-container-high border-2 border-tertiary-fixed-dim/60 flex items-center justify-center font-display font-bold text-sm text-on-surface shadow-md">
+                    ${third.initials}
+                  </div>
+                  <span class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-tertiary-container text-on-tertiary-container font-display font-bold text-[11px] flex items-center justify-center shadow">3</span>
+                </div>
+                <div class="w-full bg-surface-container rounded-t-xl pt-2.5 pb-3 px-1.5 flex flex-col items-center text-center shadow-md">
+                  <span class="font-display font-bold text-xs uppercase text-on-surface truncate w-full">${third.name}</span>
+                  <div class="font-display font-bold text-2xl text-tertiary-fixed-dim my-0.5">${third.score}</div>
+                  <span class="font-display font-bold text-[9px] uppercase text-on-surface-variant">Gialle</span>
+                  <div class="mt-2 w-full py-1 rounded bg-surface-container-high text-on-surface-variant text-[10px] font-display font-bold uppercase">+50 XP</div>
+                </div>
+              </div>
+            `;
+          }
+
+          const fourthStrip = document.getElementById("winner-fourth-strip");
+          if (fourthStrip && fourth) {
+            fourthStrip.innerHTML = `
+              <div class="flex items-center gap-2.5">
+                <span class="w-6 h-6 rounded bg-surface-container-high text-on-surface-variant font-display font-bold text-xs flex items-center justify-center">4</span>
+                <div class="w-7 h-7 rounded-full bg-surface-container-highest flex items-center justify-center font-display font-bold text-[11px] text-on-surface">
+                  ${fourth.initials}
+                </div>
+                <div class="flex flex-col">
+                  <span class="font-display font-bold text-xs text-on-surface">${fourth.name}</span>
+                  <span class="text-[10px] text-on-surface-variant">${fourth.statusText}</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="font-display font-bold text-lg text-on-surface">${fourth.score}</span>
+                <span class="font-display font-bold text-[10px] uppercase text-on-surface-variant">PT</span>
+              </div>
+            `;
+          }
+        }
+
+        // Story Share Preview Modal
+        const modalShare = document.getElementById("modal-share-story");
+        const btnSharePodium = document.getElementById("btn-share-podium");
+        const btnCloseShare = document.getElementById("btn-close-share");
+        const btnCopyStoryLink = document.getElementById("btn-copy-story-link");
+
+        if (btnSharePodium && modalShare) {
+          btnSharePodium.addEventListener("click", () => {
+            const room =
+              state.activeRooms.find((r) => r.id === state.currentRoomId) ||
+              state.activeRooms[0];
+            const sorted = getSortedPlayers();
+            const first = sorted[0];
+            const totalCars = sorted.reduce((acc, p) => acc + p.score, 0);
+
+            document.getElementById("story-room-name").textContent = room.name;
+            document.getElementById("story-winner-name").textContent =
+              first.name;
+            document.getElementById("story-winner-score").textContent =
+              `${first.score} GIALLE`;
+            document.getElementById("story-total-spots").textContent =
+              `${totalCars} Totali`;
+
+            modalShare.classList.remove("hidden");
+            modalShare.classList.add("flex");
+          });
+        }
+
+        if (btnCloseShare && modalShare) {
+          btnCloseShare.addEventListener("click", () => {
+            modalShare.classList.add("hidden");
+            modalShare.classList.remove("flex");
+          });
+        }
+
+        if (btnCopyStoryLink && modalShare) {
+          btnCopyStoryLink.addEventListener("click", () => {
+            copyTextSafe("https://macchinagialla.app/podio/MIL-882");
+            modalShare.classList.add("hidden");
+            modalShare.classList.remove("flex");
+            showToast(
+              "Scorecard copiata! Pronta per Instagram & WhatsApp",
+              "share",
+            );
+          });
+        }
+
+        // Refresh button animation on Home
+        const btnRefresh = document.getElementById("btn-refresh-rooms");
+        if (btnRefresh) {
+          btnRefresh.addEventListener("click", () => {
+            const icon = btnRefresh.querySelector(".material-symbols-outlined");
+            if (icon) {
+              icon.classList.add("animate-spin");
+              setTimeout(() => icon.classList.remove("animate-spin"), 600);
+            }
+            showToast("Radar stanze aggiornato", "radar");
+          });
+        }
+
+        // Initial Render
+        renderHomeRooms();
+        updateHomeResumeBanner();
+      })();
+    </script>
+  </body>
+</html>
