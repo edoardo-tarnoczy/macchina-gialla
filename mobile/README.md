@@ -1,56 +1,90 @@
-# Welcome to your Expo app 👋
+# Macchina Gialla Mobile
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+The React Native client uses Expo, Expo Router, and strict TypeScript. Its interface is being built incrementally with the **Tarmac Apex** design system.
 
-## Get started
+## Current state
 
-1. Install dependencies
+- Root layout loads Space Grotesk and Chivo and configures stack navigation.
+- Three tabs provide **Gioca**, **Storico**, and **Profilo**, with vector icons.
+- Room and create/join modal routes have minimal placeholder components.
+- `ScreenContainer` provides safe-area handling, optional scrolling, and a centered content width.
+- `TelemetryText` is a typed skeleton with implementation TODOs.
+- Screens do not yet reproduce the mockups or connect to the backend.
 
-   ```bash
-   npm install
-   ```
+## Structure
 
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```text
+mobile/
+├── src/
+│   ├── app/
+│   │   ├── _layout.tsx
+│   │   ├── (tabs)/         # Gioca, Storico, Profilo and tab layout
+│   │   ├── room/[code].tsx
+│   │   └── modals/         # Create room and join PIN
+│   ├── components/ui/     # ScreenContainer and TelemetryText
+│   ├── theme/tokens.ts    # Semantic colors, typography, spacing and elevation
+│   └── mockups/homepage.html
+├── assets/
+├── example/               # Archived starter code; ignored by Git
+├── app.json
+├── package.json
+└── tsconfig.json
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+Only screens and navigation layouts belong in `src/app/`. Every route must default-export a component; reusable primitives belong in `src/components/ui/`.
 
-### Other setup steps
+## Install and run
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+From `mobile/`:
 
-## Learn more
+```bash
+npm ci
+npm start
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+Open the project using a compatible Expo Go client or development build. Platform shortcuts:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+npm run android
+npm run ios
+npm run web
+```
 
-## Join the community
+These commands start Expo for the selected platform; they do not build a native development client. An Android emulator requires Android Studio and the Android SDK; an iOS simulator requires macOS and Xcode.
 
-Join our community of developers creating universal apps.
+To start Expo in LAN mode with the backend, run `npm run dev` from the repository root. See the [root README](../README.md) and [backend README](../backend/README.md).
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Design references
+
+Before building a screen, inspect its corresponding view in [homepage.html](src/mockups/homepage.html). It contains homepage, history, profile, game, winner, modal, and navigation references. You can open the HTML in a browser; its fonts and Tailwind styling require internet access.
+
+Translate the reference into React Native primitives using [tokens.ts](src/theme/tokens.ts) and the [Tarmac Apex specification](../DEISGN.md):
+
+- Use `StyleSheet.create` and semantic tokens, not Tailwind or NativeWind.
+- Reuse UI primitives rather than repeating typography and card styling.
+- Keep user-facing copy in Italian, with short telemetry badges such as `LIVE`, `HOST`, and `PIN`.
+- Treat mockup player names, scores, and rooms as sample data.
+- Match the mockup's icon meanings: speedometer, trophy, and account circle. The current tab icons are preliminary.
+
+Follow the repository's [Copilot instructions](../.github/copilot-instructions.md) for learn-by-doing guidance. Use `/step` for concepts, files to touch, typed skeletons with TODOs, and a verification step.
+
+## Checks and dependency updates
+
+From `mobile/`:
+
+```bash
+npm run lint
+npx tsc --noEmit
+```
+
+ESLint is not currently configured; the first lint run may offer to install and configure it. The archived `example/` directory is included by the current TypeScript globs and can produce unrelated starter-code errors.
+
+Use Expo's installer for SDK-compatible packages:
+
+```bash
+npx expo install package-name
+```
+
+Commit dependency manifest and lockfile changes together. After pulling changes, run `npm ci` and restart Expo. Changes to native dependencies may require rebuilding the development client.
+
+Do not run `reset-project` during normal development: it is a starter-template reset command, not a cache reset.
