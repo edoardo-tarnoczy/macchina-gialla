@@ -87,9 +87,12 @@ export function TactileButton({
       accessibilityRole="button"
       accessibilityState={{ ...accessibilityState, disabled }}
       onPressIn={handlePressIn}
+      needsOffscreenAlphaCompositing={
+        disabled || pressableProps.needsOffscreenAlphaCompositing
+      }
       style={(state) => [
-        typeof style === "function" ? style(state) : style,
         styles.container,
+        typeof style === "function" ? style(state) : style,
         variant === "spotTrigger" && {
           minHeight: buttonMetrics.spotMinHeight,
         },
@@ -107,8 +110,9 @@ export function TactileButton({
             pointerEvents="none"
             style={[
               styles.face,
-              restingButtonStyles[variant],
-              pressed && !disabled && pressedButtonStyles[variant],
+              pressed && !disabled
+                ? pressedButtonStyles[variant]
+                : restingButtonStyles[variant],
             ]}
           >
             <View style={styles.labelRow}>

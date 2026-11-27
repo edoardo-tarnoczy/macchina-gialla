@@ -10,6 +10,7 @@ The React Native client uses Expo, Expo Router, and strict TypeScript. Its inter
 - `ScreenContainer` provides safe-area handling, optional scrolling, and a centered content width.
 - `TelemetryText` is a typed skeleton with implementation TODOs.
 - `TactileButton` uses a stationary rounded shelf offset beneath a separate rounded face. Pressing moves only the face, exposing 2px of the 6px shelf at the bottom without revealing a shelf above it or changing layout height; disabled buttons remain still and skip haptics.
+- Disabled buttons composite their overlapping surfaces together before applying opacity, preventing the shelf from showing through the face on Android.
 - Screens do not yet reproduce the mockups or connect to the backend.
 
 ## Structure

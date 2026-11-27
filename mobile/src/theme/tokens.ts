@@ -255,7 +255,6 @@ export const elevation = {
     backgroundColor: colors.level0Recessed,
     borderTopWidth: 1,
     borderTopColor: colors.level2CardHigh,
-    // TODO: Add a subtle upward shadow.
     boxShadow: [
       {
         offsetX: 0,
