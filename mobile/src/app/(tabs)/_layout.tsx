@@ -1,6 +1,15 @@
 import { Tabs } from "expo-router";
 import { colors } from "@/theme/tokens";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { ComponentProps } from "react";
+
+type IconName = ComponentProps<typeof MaterialCommunityIcons>["name"];
+
+function tabIcon(name: IconName) {
+  return ({ color, size }: { color: unknown; size: number }) => (
+    <MaterialCommunityIcons name={name} color={color as string} size={size} />
+  );
+}
 
 export default function TabsLayout() {
   return (
@@ -19,31 +28,21 @@ export default function TabsLayout() {
         name="index"
         options={{
           title: "Gioca",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="gamepad-variant"
-              color={color}
-              size={size}
-            />
-          ),
+          tabBarIcon: tabIcon("speedometer"),
         }}
       />
       <Tabs.Screen
         name="history"
         options={{
           title: "Storico",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="history" color={color} size={size} />
-          ),
+          tabBarIcon: tabIcon("trophy"),
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: "Profilo",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account" color={color} size={size} />
-          ),
+          tabBarIcon: tabIcon("account-circle"),
         }}
       />
     </Tabs>
