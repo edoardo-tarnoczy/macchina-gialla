@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import { colors } from "@/theme/tokens";
+import { colors, elevation } from "@/theme/tokens";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ComponentProps } from "react";
 
@@ -18,10 +18,7 @@ export default function TabsLayout() {
         headerShown: false,
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
-        tabBarStyle: {
-          backgroundColor: colors.level1Chassis,
-          borderTopColor: colors.borderSubtle,
-        },
+        tabBarStyle: elevation.tabBar,
       }}
     >
       <Tabs.Screen

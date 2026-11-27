@@ -48,7 +48,7 @@ export const palette = {
   error400: "#ffb4ab",
   error900: "#93000a",
   tertiary300: "#ffb3ad",
-  tertiary900: "#930013",
+  tertiary900: "#6c000f",
 } as const;
 
 /**
@@ -91,6 +91,7 @@ export const colors = {
   penalty: palette.crimson500, // #ef4444 (VAR modal edge & dispute glow)
   error: palette.error400, // #ffb4ab
   errorContainer: palette.error900, // #93000a
+  errorShelf: palette.tertiary900, // #930013
 } as const;
 
 /**
@@ -117,7 +118,7 @@ export const radii = {
  * 4. TYPOGRAPHY SCALE
  * Includes tabular-nums on Space Grotesk for jitter-free live score updates.
  */
-export const typography: Record<string, TextStyle> = {
+export const typography = {
   displayScore: {
     fontFamily: "SpaceGrotesk_700Bold",
     fontSize: 64,
@@ -173,9 +174,16 @@ export const typography: Record<string, TextStyle> = {
   },
 } as const;
 
+export const buttonMetrics = {
+  spotMinHeight: 72,
+  disabledOpacity: 0.5,
+  shelfHeight: 6,
+  pressTravel: 4,
+} as const;
+
 /**
  * 5. MECHANICAL ELEVATION & TACTILE PHYSICS
- * Replicates extruded bottom shelves and recessed chassis borders in React Native.
+ * Button shelves stay stationary while their rounded faces move.
  */
 export const elevation = {
   level1Chassis: {
@@ -197,21 +205,67 @@ export const elevation = {
     elevation: 8,
   } satisfies ViewStyle,
 
-  // Primary Spot Trigger resting vs pressed physical shelf
+  triggerShelf: {
+    backgroundColor: colors.primaryShelf,
+  } satisfies ViewStyle,
+
   triggerResting: {
     backgroundColor: colors.primary,
-    borderBottomWidth: 6,
-    borderBottomColor: colors.primaryShelf,
     transform: [{ translateY: 0 }],
   } satisfies ViewStyle,
 
   triggerPressed: {
     backgroundColor: colors.primary,
-    borderBottomWidth: 2,
-    borderBottomColor: colors.primaryShelf,
-    transform: [{ translateY: 4 }],
+    transform: [{ translateY: buttonMetrics.pressTravel }],
   } satisfies ViewStyle,
-} as const;
+
+  secondaryShelf: {
+    backgroundColor: palette.shadowDrop,
+  } satisfies ViewStyle,
+
+  secondaryResting: {
+    backgroundColor: colors.level2Card,
+    borderWidth: 1,
+    borderColor: colors.borderSubtle,
+    transform: [{ translateY: 0 }],
+  } satisfies ViewStyle,
+
+  secondaryPressed: {
+    backgroundColor: colors.level2Card,
+    borderWidth: 1,
+    borderColor: colors.borderSubtle,
+    transform: [{ translateY: buttonMetrics.pressTravel }],
+  } satisfies ViewStyle,
+
+  errorShelf: {
+    backgroundColor: colors.errorContainer,
+  } satisfies ViewStyle,
+
+  errorResting: {
+    backgroundColor: colors.penalty,
+    transform: [{ translateY: 0 }],
+  } satisfies ViewStyle,
+
+  errorPressed: {
+    backgroundColor: colors.penalty,
+    transform: [{ translateY: buttonMetrics.pressTravel }],
+  } satisfies ViewStyle,
+
+  tabBar: {
+    backgroundColor: colors.level0Recessed,
+    borderTopWidth: 1,
+    borderTopColor: colors.level2CardHigh,
+    // TODO: Add a subtle upward shadow.
+    boxShadow: [
+      {
+        offsetX: 0,
+        offsetY: -4,
+        blurRadius: 12,
+        color: colors.level0Recessed,
+      },
+    ],
+  } satisfies ViewStyle,
+} as const satisfies Record<string, ViewStyle>;
 
 export const theme = {
   palette,

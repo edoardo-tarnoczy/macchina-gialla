@@ -9,6 +9,7 @@ The React Native client uses Expo, Expo Router, and strict TypeScript. Its inter
 - Room and create/join modal routes have minimal placeholder components.
 - `ScreenContainer` provides safe-area handling, optional scrolling, and a centered content width.
 - `TelemetryText` is a typed skeleton with implementation TODOs.
+- `TactileButton` uses a stationary rounded shelf offset beneath a separate rounded face. Pressing moves only the face, exposing 2px of the 6px shelf at the bottom without revealing a shelf above it or changing layout height; disabled buttons remain still and skip haptics.
 - Screens do not yet reproduce the mockups or connect to the backend.
 
 ## Structure
@@ -21,7 +22,7 @@ mobile/
 │   │   ├── (tabs)/         # Gioca, Storico, Profilo and tab layout
 │   │   ├── room/[code].tsx
 │   │   └── modals/         # Create room and join PIN
-│   ├── components/ui/     # ScreenContainer and TelemetryText
+│   ├── components/ui/     # ScreenContainer, TelemetryText and TactileButton
 │   ├── theme/tokens.ts    # Semantic colors, typography, spacing and elevation
 │   └── mockups/homepage.html
 ├── assets/
